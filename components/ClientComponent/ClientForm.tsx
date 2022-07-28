@@ -1,0 +1,336 @@
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { IClientForm, clientFormObj, IClientResponse } from "../../Types/clientTypes";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import { Button } from "semantic-ui-react";
+import USStates from "../../utils/states.json";
+import { handleSaveAPI, handleUpdateAPI } from "../../actions/customer";
+import CircularProgress from "../SpinnerComponent/CircularProgress";
+import { useDispatch, useSelector } from "react-redux";
+import { handleSnackBar, ISnackBar } from "../../store/actions/snackBar";
+
+type IProps = {
+  formValues: IClientForm;
+  formAction: string;
+  setFormValues: Dispatch<SetStateAction<IClientForm>>;
+  setRows: Dispatch<SetStateAction<IClientResponse[]>>;
+  rows: Array<Object>;
+  modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
+  setCustomerId: Dispatch<SetStateAction<number>>;
+  setDisplayConsigneeForm: Dispatch<SetStateAction<boolean>>;
+  setPageIsLoading: Dispatch<SetStateAction<boolean>>;
+};
+
+const line = <div style={{ height: 2, border: "1px solid #E0E0E0", marginBottom: 15, marginTop: 5 }} />;
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    width: "30%",
+    marginRight: 10,
+  },
+}));
+
+const ClientForm = ({
+  formValues,
+  formAction,
+  setFormValues,
+  setRows,
+  rows,
+  modalAction,
+  setCustomerId,
+  setDisplayConsigneeForm,
+  setPageIsLoading,
+}: IProps): JSX.Element => {
+  const classes = useStyles();
+  const [disableCity, setDisableCity] = useState<boolean>(true);
+  const [cityData, setCityData] = useState<Array<[string]>>([]);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const dispatch = useDispatch();
+  const snackBar = useSelector((state: any) => state.snackBarReducer);
+  const usStatesData: any = { ...USStates };
+
+  const statesData = (): Array<string> => {
+    const data = [];
+    for (const property in usStatesData) {
+      data.push(property);
+    }
+    return data;
+  };
+
+  const renderCityData = (value: string) => {
+    const filtered = Object.keys(usStatesData)
+      .filter((result) => {
+        return result === value;
+      })
+      .reduce((obj: any, key: string) => {
+        obj[key] = usStatesData[key];
+        return obj;
+      }, {});
+
+    if (filtered[value]) {
+      setCityData(filtered[value]);
+      setDisableCity(false);
+    }
+  };
+
+  //if edit handle city data
+  useEffect(() => {
+    if (formAction === "edit") {
+      renderCityData(formValues.state);
+    }
+  }, []);
+
+  const handleChange = (event: any) => {
+    const { value, name } = event.target;
+    if (name === "state") {
+      if (value !== "") {
+        renderCityData(value);
+        setDisableCity(false);
+      }
+    }
+
+    setFormValues((prev: any) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const renderState = () => {
+    return (
+      <FormControl variant="outlined" className={classes.formControl}>
+        <Select
+          native
+          value={formValues.state}
+          onChange={handleChange}
+          label="State"
+          inputProps={{
+            name: "state",
+            id: "outlined-state-native-simple",
+          }}
+        >
+          <option aria-label="None" value="">
+            Select a state
+          </option>
+          {statesData().map((result, index) => (
+            <option aria-label="None" value={result} key={index}>
+              {result}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  };
+
+  const renderCity = () => {
+    return (
+      <FormControl variant="outlined" className={classes.formControl}>
+        <Select
+          native
+          value={formValues.city}
+          onChange={handleChange}
+          label="City"
+          inputProps={{
+            name: "city",
+            id: "outlined-city-native-simple",
+          }}
+          disabled={disableCity}
+        >
+          <option aria-label="None" value="">
+            Select a city
+          </option>
+          {cityData.map((result, index) => (
+            <option aria-label="None" value={result} key={index}>
+              {result}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  };
+
+  const handleSaveAction = (data: any) => {
+    setRows((prev: any) => [...prev, data]);
+    setFormValues(clientFormObj);
+  };
+
+  const handleSave = async (action: string) => {
+    try {
+      setIsSaving(true);
+      const data: any = await handleSaveAPI(formValues);
+      setIsSaving(false);
+
+      const snackObj: ISnackBar = { ...snackBar };
+      snackObj.display_snackBar = true;
+      snackObj.message = "Customer added";
+      dispatch(handleSnackBar(snackObj));
+
+      if (action === "saveANDclose") {
+        handleSaveAction(data);
+        setPageIsLoading(true);
+        modalAction("", false, false);
+      } else if (action === "saveANDnew") {
+        setError("");
+
+        handleSaveAction(data);
+        setPageIsLoading(true);
+      } else {
+        handleSaveAction(data);
+        setCustomerId(data.id);
+        setPageIsLoading(true);
+
+        setDisplayConsigneeForm(true);
+      }
+    } catch (e) {
+      setIsSaving(false);
+      setError(e.message);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const objToSave: any = { ...formValues };
+      const indexId = objToSave.indexId;
+      const dataId = objToSave.id;
+      delete objToSave.indexId;
+
+      setIsSaving(true);
+      await handleUpdateAPI(objToSave);
+      setIsSaving(false);
+      //update table data
+      let array: any = [...rows];
+      array[indexId] = {
+        ...objToSave,
+        id: dataId,
+      };
+      const snackObj: ISnackBar = { ...snackBar };
+      snackObj.display_snackBar = true;
+      snackObj.message = "Customer updated";
+      dispatch(handleSnackBar(snackObj));
+      setRows(array);
+      setPageIsLoading(true);
+      modalAction("", false, false);
+    } catch (e) {
+      setIsSaving(false);
+      setError(e.message);
+    }
+  };
+
+  const renderButtons = () => {
+    if (formAction === "new") {
+      return (
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
+          <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSave("saveANDfill")}>
+            Save and fill consignee
+          </Button>
+          <Button primary style={{ marginRight: 10 }} onClick={() => handleSave("saveANDnew")}>
+            Save and new
+          </Button>
+          <Button positive onClick={() => handleSave("saveANDclose")}>
+            Save and close
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
+          <Button primary onClick={handleUpdate}>
+            Update
+          </Button>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div style={{ width: 700, padding: 20 }}>
+      <p style={{ color: "red" }}>{error}</p>
+      <div>
+        <p style={{ fontWeight: 400 }}>Details</p>
+        {line}
+        <div>
+          <TextField
+            label="Full name"
+            style={{ width: "100%" }}
+            onChange={handleChange}
+            value={formValues.full_name}
+            name="full_name"
+            variant="outlined"
+          />
+        </div>
+        <form autoComplete={"off"} style={{ display: "flex", marginTop: 15 }}>
+          <TextField
+            label="Phone number"
+            style={{ width: "50%", marginRight: 10 }}
+            onChange={handleChange}
+            value={formValues.phone_number}
+            name="phone_number"
+            variant="outlined"
+          />
+          <TextField label="Email" style={{ width: "50%" }} onChange={handleChange} value={formValues.email} name="email" variant="outlined" />
+        </form>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <p style={{ fontWeight: 400 }}>Address</p>
+        {line}
+        <TextField
+          label="Address"
+          style={{ width: "100%", marginRight: 10 }}
+          onChange={handleChange}
+          value={formValues.address}
+          name="address"
+          variant="outlined"
+        />
+        <form autoComplete={"off"} style={{ display: "flex", marginTop: 15 }}>
+          {renderState()}
+          {renderCity()}
+          <TextField label="Zip Code" style={{ width: "40%" }} onChange={handleChange} value={formValues.zipcode} name="zipcode" variant="outlined" />
+        </form>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <p style={{ fontWeight: 400 }}>Others</p>
+        {line}
+
+        <form autoComplete={"off"} style={{ display: "flex", marginTop: 15 }}>
+          <TextField
+            label="IRS Tax ID"
+            style={{ width: "35%", marginRight: 10 }}
+            onChange={handleChange}
+            value={formValues.irs_tax_id}
+            name="irs_tax_id"
+            variant="outlined"
+          />
+          <TextField
+            label="Passport"
+            style={{ width: "35%", marginRight: 10 }}
+            onChange={handleChange}
+            value={formValues.passport_number}
+            name="passport_number"
+            variant="outlined"
+          />
+          <TextField
+            label="Social Security Number"
+            style={{ width: "35%" }}
+            onChange={handleChange}
+            value={formValues.ssn}
+            name="ssn"
+            variant="outlined"
+          />
+        </form>
+      </div>
+      {isSaving ? (
+        <div style={{ marginTop: 30, float: "right", padding: 30 }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        renderButtons()
+      )}
+    </div>
+  );
+};
+
+export default ClientForm;

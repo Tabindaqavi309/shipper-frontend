@@ -1,0 +1,10 @@
+{
+  "customerSRV": {
+    "localUrl": "http://www.oldsailor-prod.xyz",
+    "proURL": ""
+  },
+  "authSRV": {
+    "localUrl": "http://www.oldsailor-prod.xyz",
+    "proURL": ""
+  }
+}
