@@ -201,8 +201,11 @@ const ClientForm = ({
         setDisplayConsigneeForm(true);
       }
     } catch (e) {
-      setIsSaving(false);
-      setError(e.message);
+
+      if(e instanceof Error){
+        setIsSaving(false);
+        setError(e.message);
+      }
     }
   };
 
@@ -230,8 +233,10 @@ const ClientForm = ({
       setPageIsLoading(true);
       modalAction("", false, false);
     } catch (e) {
-      setIsSaving(false);
+      if(e instanceof Error){
+        setIsSaving(false);
       setError(e.message);
+      }
     }
   };
 
