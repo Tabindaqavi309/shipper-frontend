@@ -69,8 +69,10 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
       setPageIsLoading(true);
       modalAction("", false, false);
     } catch (e) {
-      setIsSaving(false);
+      if(e instanceof Error){
+        setIsSaving(false);
       setError(e.message);
+      }
     }
   };
 

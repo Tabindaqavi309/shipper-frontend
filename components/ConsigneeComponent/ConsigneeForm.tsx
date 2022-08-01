@@ -94,8 +94,10 @@ const ConsigneeForm = ({
         handleSaveAction(data);
       }
     } catch (e) {
-      setIsSaving(false);
+      if(e instanceof Error){
+        setIsSaving(false);
       setError(e.message);
+      }
     }
   };
 
@@ -124,8 +126,10 @@ const ConsigneeForm = ({
 
       modalAction("", false, false);
     } catch (e) {
-      setIsSaving(false);
+      if(e instanceof Error){
+        setIsSaving(false);
       setError(e.message);
+      }
     }
   };
 
