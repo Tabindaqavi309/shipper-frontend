@@ -79,10 +79,11 @@ const FormModal = ({
       setPageIsLoading(false);
       closeModal();
     } catch (e) {
+      if(e instanceof Error){
       setErrorMessage(e.message);
       setError(true);
       setIsSaving(false);
-      setPageIsLoading(false);
+      setPageIsLoading(false);}
       setTimeout(() => {
         setError(false);
       }, 4000);
