@@ -174,10 +174,16 @@ const FormModal = ({
       setPageIsLoading(false);
       closeModal();
     } catch (e) {
-      setErrorMessage(e.message);
+      if (e instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        setErrorMessage(e.message);
       setError(true);
       setIsSaving(false);
       setPageIsLoading(false);
+      } else {
+        console.log('Unexpected error', e);
+      }
+     
       setTimeout(() => {
         setError(false);
       }, 4000);
