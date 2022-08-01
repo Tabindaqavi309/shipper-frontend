@@ -27,7 +27,7 @@ const SearchSection = ({ openModalForm, setRows, setRowCount }: IProps) => {
     <div style={{ display: "flex" }}>
       <Input icon="search" placeholder="Search..." style={{ width: 400, marginRight: 10 }} onChange={handleSearch} />
       <Button primary onClick={openModalForm}>
-        New Booking Receipts
+        New Booking Confirmation
       </Button>
     </div>
   );

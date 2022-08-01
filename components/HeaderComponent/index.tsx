@@ -24,8 +24,8 @@ export default function HeaderComponent(this: any) {
     } else if (name === "POA/NRA Contract") {
       setActiveItem("poa_nra");
       handleRouteChange("poa_nra");
-    } else if (name === "Booking Receipts") {
-      setActiveItem("booking_receipts");
+    } else if (name === "Booking Confirmation") {
+      setActiveItem("booking_confirmation");
       handleRouteChange("booking_receipts");
     } else if (name === "Dock Receipts") {
       setActiveItem("dock_receipts");
@@ -48,7 +48,7 @@ export default function HeaderComponent(this: any) {
       <Menu.Item name="POA/NRA Contract" active={activeItem === "poa_nra"} onClick={handleItemClick} />
 
       <Menu.Item name="container" active={activeItem === "container"} onClick={handleItemClick} />
-      <Menu.Item name="Booking Receipts" active={activeItem === "booking_receipts"} onClick={handleItemClick} />
+      <Menu.Item name="Booking Confirmation" active={activeItem === "booking_confirmation"} onClick={handleItemClick} />
       <Menu.Item name="Dock Receipts" active={activeItem === "dock_receipts"} onClick={handleItemClick} />
       <Menu.Item name="Invoice" active={activeItem === "invoice"} onClick={handleItemClick} />
     </Menu>

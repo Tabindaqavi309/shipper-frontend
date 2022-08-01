@@ -45,6 +45,7 @@ const ClientForm = ({
 }: IProps): JSX.Element => {
   const classes = useStyles();
   const [disableCity, setDisableCity] = useState<boolean>(true);
+  const [other, setOther] = useState<boolean>(false);
   const [cityData, setCityData] = useState<Array<[string]>>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -84,14 +85,20 @@ const ClientForm = ({
   }, []);
 
   const handleChange = (event: any) => {
-    const { value, name } = event.target;
+
+    let { value, name } = event.target;
     if (name === "state") {
       if (value !== "") {
+
         renderCityData(value);
         setDisableCity(false);
       }
-    }
 
+      if (value == "Other") {
+        value = ""
+        setOther(true);
+      }
+    }
     setFormValues((prev: any) => {
       return {
         ...prev,
@@ -101,9 +108,17 @@ const ClientForm = ({
   };
 
   const renderState = () => {
+    console.log(statesData())
     return (
       <FormControl variant="outlined" className={classes.formControl}>
-        <Select
+        {other ? <TextField
+          label="State"
+          style={{ width: "100%" }}
+          onChange={handleChange}
+          value={formValues.state}
+          name="state"
+          variant="outlined"
+        /> : <Select
           native
           value={formValues.state}
           onChange={handleChange}
@@ -121,7 +136,7 @@ const ClientForm = ({
               {result}
             </option>
           ))}
-        </Select>
+        </Select>}
       </FormControl>
     );
   };

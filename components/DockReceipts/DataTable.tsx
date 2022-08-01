@@ -108,21 +108,21 @@ const DataTable = ({
       <Button.Group>
         <Button
           onClick={() => {
-            const url = `/print_dock?id=${rows[indexId].id}&&containerId=${rows[indexId].container_id}&&billOflading=false&&shipAsAgent=true`;
-            window.open(url, "_blank");
-          }}
-          color="purple"
-        >
-          Print Receipt as Agent
-        </Button>
-        <Button
-          onClick={() => {
             const url = `/print_dock?id=${rows[indexId].id}&&containerId=${rows[indexId].container_id}&&billOflading=false&&shipAsAgent=false`;
             window.open(url, "_blank");
           }}
           color="orange"
         >
           Print Receipt as Client
+        </Button>
+        <Button
+          onClick={() => {
+            const url = `/print_dock?id=${rows[indexId].id}&&containerId=${rows[indexId].container_id}&&billOflading=false&&shipAsAgent=true`;
+            window.open(url, "_blank");
+          }}
+          color="purple"
+        >
+          Print Receipt as Agent
         </Button>
         <Button
           onClick={() => {

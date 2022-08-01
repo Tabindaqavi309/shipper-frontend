@@ -75,7 +75,7 @@ const BookingReceipts = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Booking Receipts ({rowCount})</h2>
+      <h2>Booking Confirmation ({rowCount})</h2>
       <SearchSection openModalForm={openModalForm} setRows={setRows} setRowCount={setRowCount} />
       <div style={{ marginTop: 10 }}>
         <DataTable

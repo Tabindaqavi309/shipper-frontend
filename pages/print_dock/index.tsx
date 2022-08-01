@@ -137,7 +137,7 @@ const PrintNra = () => {
                           <div>
                             <span>OLDSAILORS OCEAN SHIPPING LLC </span>
                             <br />
-                            <span>13903 CHADSWORTH TERRACE,\nLaurel, MD 20707, USA</span>
+                            <span>13903 CHADSWORTH TERRACE, Laurel, MD 20707, USA</span>
                             <br />
                             <span>301-213-6961</span>
                             <br />

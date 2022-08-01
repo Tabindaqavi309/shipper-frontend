@@ -1116,5 +1116,6 @@
   "Wyoming": ["Cheyenne", "Casper"],
   "West Virginia": ["Charleston", "Huntington"],
   "Vermont": ["Burlington", "BRANDON"],
-  "DC": ["NORTH WEST", "WASHINGTON", "NE"]
+  "DC": ["NORTH WEST", "WASHINGTON", "NE"],
+  "Other":[]
 }
