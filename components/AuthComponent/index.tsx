@@ -44,8 +44,14 @@ const AuthComponent = ({ queryParam }: IProps): JSX.Element => {
       setCookie(result);
       window.location.href = "/";
     } catch (e) {
-      setISubmitting(false);
-      setFormError(e.message);
+      if (e instanceof Error) {
+        // ✅ TypeScript knows err is Error
+        setISubmitting(false);
+        setFormError(e.message);
+      } else {
+        console.log('Unexpected error', e);
+      }
+  
       setTimeout(() => {
         setFormError("");
       }, 5000);
