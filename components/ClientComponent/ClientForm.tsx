@@ -93,11 +93,15 @@ const ClientForm = ({
         renderCityData(value);
         setDisableCity(false);
       }
-
-      if (value == "Other") {
+      if(value ==""){
+        setOther(false);
+      }
+     if (value == "Other") {
+      formValues.city = ""
         value = ""
         setOther(true);
       }
+      
     }
     setFormValues((prev: any) => {
       return {
@@ -108,7 +112,6 @@ const ClientForm = ({
   };
 
   const renderState = () => {
-    console.log(statesData())
     return (
       <FormControl variant="outlined" className={classes.formControl}>
         {other ? <TextField
@@ -144,7 +147,14 @@ const ClientForm = ({
   const renderCity = () => {
     return (
       <FormControl variant="outlined" className={classes.formControl}>
-        <Select
+       {other ? <TextField
+          label="City"
+          style={{ width: "100%" }}
+          onChange={handleChange}
+          value={formValues.city}
+          name="city"
+          variant="outlined"
+        /> : <Select
           native
           value={formValues.city}
           onChange={handleChange}
@@ -163,7 +173,7 @@ const ClientForm = ({
               {result}
             </option>
           ))}
-        </Select>
+        </Select>}
       </FormControl>
     );
   };

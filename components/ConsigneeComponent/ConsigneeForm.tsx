@@ -50,6 +50,7 @@ const ConsigneeForm = ({
 }: IProps): JSX.Element => {
   const classes = useStyles();
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [other, setOther] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const dispatch = useDispatch();
   const snackBar = useSelector((state: any) => state.snackBarReducer);
@@ -57,7 +58,16 @@ const ConsigneeForm = ({
   const [searchData, setSearchData] = useState<IClientResponse[]>([]);
 
   const handleChange = (event: any) => {
-    const { value, name } = event.target;
+    let { value, name } = event.target;
+
+     if(value ==""){
+      setOther(false)
+     }
+
+     if(value == "Other"){
+      value = ""
+      setOther(true)
+     }
 
     setFormValues((prev: any) => {
       return {
@@ -175,7 +185,14 @@ const ConsigneeForm = ({
   const renderCountry = () => {
     return (
       <FormControl variant="outlined" className={classes.formControlCountry}>
-        <Select
+      {other ? <TextField
+          label="Country"
+          style={{ width: "100%" }}
+          onChange={handleChange}
+          value={formValues.country}
+          name="country"
+          variant="outlined"
+        /> :  <Select
           native
           value={formValues.country}
           onChange={handleChange}
@@ -193,7 +210,7 @@ const ConsigneeForm = ({
               {result.name}
             </option>
           ))}
-        </Select>
+        </Select>}
       </FormControl>
     );
   };
