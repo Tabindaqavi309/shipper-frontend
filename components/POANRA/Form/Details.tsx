@@ -20,8 +20,10 @@ const Details = ({ inputFunction, setInputFunction, setOptionData, optionData, f
   }, []);
 
   const handleInput = (index: number, value: string) => {
+    console.log(value)
     const copy = [...inputFunction];
     copy[index].value = value;
+    console.log(copy[index])
     setInputFunction(copy);
   };
 

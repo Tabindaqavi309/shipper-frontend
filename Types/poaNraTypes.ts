@@ -58,7 +58,7 @@ export const poa_nra_form_values: IPOANRA_Response = {
   minimum: 0,
   origin_service: "",
   destination_service: "",
-  special_conditions: "",
+  special_conditions: "RATE IS FOR 40 FT HIGH CUBE CONTAINER  PORT TO PORT",
   commodity: "",
 };
 
