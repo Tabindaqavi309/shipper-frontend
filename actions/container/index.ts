@@ -94,7 +94,7 @@ export const searchVIN = async (vin: string) => {
       "partner-token": "c35f56a7de364303a49dc2cb3df88a44",
     };
     axios
-      .get("http://api.carmd.com/v3.0/decode?vin=" + vin, { headers })
+      .get("https://api.carmd.com/v3.0/decode?vin=" + vin, { headers })
       .then((data) => {
         resolve(data.data);
       })

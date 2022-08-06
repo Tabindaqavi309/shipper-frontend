@@ -260,7 +260,7 @@ const PrintNra = () => {
                                   <b>FILE NUMBER</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>OLD-SAILOR_{row.id}</span>
+                                <span style={{ fontSize: 17 }}>OLD-{row.id}</span>
                               </div>
                             </div>
                           </div>
@@ -276,7 +276,7 @@ const PrintNra = () => {
                                   <b>EXPORTER REFERENCES</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>EXP-OLD-SAILOR-{row.id}</span>
+                                <span style={{ fontSize: 17 }}>OLD-{row.id}</span>
                               </div>
                             </div>
                           </div>
