@@ -1,25 +1,33 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
-import { IConsigneeForm } from "../../Types/consigneeTypes";
+import { IConsigneeForm, IConsigneeResponse, consigneeFormObj } from "../../Types/consigneeTypes";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
+import { Button } from "semantic-ui-react";
 import { handleSaveAPI } from "../../actions/consignee";
 import CircularProgress from "../SpinnerComponent/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSnackBar, ISnackBar } from "../../store/actions/snackBar";
 import "semantic-ui-css/semantic.min.css";
 import countries from "../ConsigneeComponent/countries.json";
+import POANRA from "../../pages/poa_nra";
+import POANRAFORM from "./POANRAFORM";
+import { IPOANRA_Response, poa_nra_form_values } from "../../Types/poaNraTypes";
 
 type IProps = {
   formValues: IConsigneeForm;
   setFormValues: Dispatch<SetStateAction<IConsigneeForm>>;
   modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
+  setRows: Dispatch<SetStateAction<IConsigneeResponse[]>>;
+  rows: Array<Object>;
   customerName: string;
   customerId: number;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
+
+
 
 const line = <div style={{ height: 2, border: "1px solid #E0E0E0", marginBottom: 15, marginTop: 5 }} />;
 
@@ -34,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setPageIsLoading }: IProps): JSX.Element => {
+const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setRows, rows, setPageIsLoading }: IProps): JSX.Element => {
   const classes = useStyles();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -42,6 +50,8 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
   const snackBar = useSelector((state: any) => state.snackBarReducer);
   const countriesData: any = [...countries];
 
+  const [displayPoaNraForm, setDisplayPoaNraForm] = useState<boolean>(false);
+  const [formValues_POA_NRA, setFormValues_POA_NRA] = useState<IPOANRA_Response>(poa_nra_form_values);
   const handleChange = (event: any) => {
     const { value, name } = event.target;
 
@@ -53,21 +63,34 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
     });
   };
 
+
+  const handleSaveAction = (data: any) => {
+   // setRows((prev: any) => [...prev, data]);
+    setFormValues(consigneeFormObj);
+  };
+
+
   const handleSave = async (action: string) => {
     try {
-      const newValues = { ...formValues };
-      newValues.customer_id = customerId;
-
-      setIsSaving(true);
-      await handleSaveAPI(newValues);
       setIsSaving(false);
-
+            const newValues = { ...formValues };
+            newValues.customer_id = customerId;
+            setIsSaving(true);
+       const data: any = await handleSaveAPI(newValues);
+      setIsSaving(false);
       const snackObj: ISnackBar = { ...snackBar };
       snackObj.display_snackBar = true;
       snackObj.message = "Consignee added";
       dispatch(handleSnackBar(snackObj));
+      if (action === "saveANDclose") {
+  
       setPageIsLoading(true);
       modalAction("", false, false);
+    }   
+      else {
+        setPageIsLoading(true);
+        setDisplayPoaNraForm(true);
+      }
     } catch (e) {
       if(e instanceof Error){
         setIsSaving(false);
@@ -78,9 +101,13 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
 
   const renderButtons = () => (
     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
-      <Button variant="contained" color="secondary" onClick={() => handleSave("saveANDclose")}>
-        Save and close
-      </Button>
+   
+      <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSave("saveANDfill")}>
+            Save and fill poa/nra
+          </Button>
+          <Button positive onClick={() => handleSave("saveANDclose")}>
+            Save and close
+          </Button>
     </div>
   );
 
@@ -111,13 +138,13 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
   };
 
   return (
-    <div style={{ width: 700, padding: 20 }}>
+    <div>
+      {!displayPoaNraForm ?<div style={{ width: 700, padding: 20 }}>
       <p style={{ color: "red" }}>{error}</p>
       <div>
         <p style={{ marginBottom: 5, fontSize: 20 }}>
           Adding Consignee for <strong>{customerName}</strong>
         </p>
-
         {line}
         <div>
           <TextField
@@ -174,7 +201,7 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
             name="zipcode"
             variant="outlined"
           />
-        </div>
+        </div> 
       </div>
 
       {isSaving ? (
@@ -184,7 +211,14 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
       ) : (
         renderButtons()
       )}
-    </div>
+    </div> : <POANRAFORM
+         formValues={formValues_POA_NRA}
+         setFormValues={setFormValues_POA_NRA}
+         modalAction={modalAction}
+         customerName={formValues.full_name}
+         customerId={customerId}
+         setPageIsLoading={setPageIsLoading}/> }
+    </div> 
   );
 };
 
