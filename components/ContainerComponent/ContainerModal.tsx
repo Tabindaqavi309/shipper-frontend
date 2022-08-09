@@ -128,7 +128,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         setStep(array);
       } else {
         setIsLoading(true);
-        await handleSaveCarAPI(carData);
+       await handleSaveCarAPI(carData);
         setIsLoading(false);
         setPageIsLoading((prev) => {
           return !prev;
@@ -136,21 +136,21 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         setCarData([]);
         setCarFormValues(carFormValuesObj);
         setFormValues(containerFormObj);
+        array[0].active =true;
+        array[0].disabled =false;
+        setTabIndex(0);
+      setSection(array[0].value);
+       setStep(array);
         closeModal();
       }
 
       if (array[tabIndex].value === "personal_effect") {
         if (arrayLength > 4) {
-          if (containerId === 0) {
-            //insert
             setIsLoading(true);
             const data: any = await handleSaveContainerAPI(formValues);
             setIsLoading(false);
-            setContainerId(data.id);
-          } else {
-            //update
-            console.log("update code here");
-          }
+            setContainerId(data.id)
+    
         }
       }
     } catch (err) {

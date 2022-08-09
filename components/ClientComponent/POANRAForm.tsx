@@ -9,11 +9,9 @@ import {
   generateInput,
   poa_nra_form_values
 } from "../../Types/poaNraTypes";
-import { IClientResponse, IClientForm } from "../../Types/clientTypes";
 import CircularProgress from "../SpinnerComponent/CircularProgress";
-import CustomerForm from "./Form/CustomerForm";
-import ConsigneeForm from "./Form/ConsigneeForm";
-import Details from "./Form/Details";
+import CustomerForm from "./POANRADetails/CustomerForm"
+import Details from "./POANRADetails/Details";
 import { createPONRA_API, findConsigneeByCustomerId, handleUpdatePOA_NRA_API } from "../../actions/poa_nra";
 
 
@@ -147,7 +145,7 @@ const POANRAForm = ({formValues, setFormValues, modalAction,customerName, custom
   ];
 
  
-  return (<div style={{  width: 700, padding: 20}} > 
+  return (<div style={{  width: 1000, padding: 20, height: 600}} > 
   
    <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
   {line}
