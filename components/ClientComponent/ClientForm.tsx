@@ -19,6 +19,7 @@ type IProps = {
   rows: Array<Object>;
   modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
   setCustomerId: Dispatch<SetStateAction<number>>;
+  setCustomerName: Dispatch<SetStateAction<string>>;
   setDisplayConsigneeForm: Dispatch<SetStateAction<boolean>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
@@ -40,6 +41,7 @@ const ClientForm = ({
   rows,
   modalAction,
   setCustomerId,
+  setCustomerName,
   setDisplayConsigneeForm,
   setPageIsLoading,
 }: IProps): JSX.Element => {
@@ -206,6 +208,7 @@ const ClientForm = ({
       } else {
         handleSaveAction(data);
         setCustomerId(data.id);
+        setCustomerName(data.full_name);
         setPageIsLoading(true);
 
         setDisplayConsigneeForm(true);

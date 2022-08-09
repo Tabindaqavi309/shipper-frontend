@@ -11,12 +11,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleModal } from "../../store/actions/modal";
 import { handleSnackBar, ISnackBar } from "../../store/actions/snackBar";
 import ConsigneeForm from "../../components/ClientComponent/ConsigneeForm";
+import POANRAForm from "../../components/ClientComponent/POANRAForm";
 import { consigneeFormObj, IConsigneeForm } from "../../Types/consigneeTypes";
+import { IPOANRA_FORM, IPOANRA_Response, poa_nra_form_values } from "../../Types/poaNraTypes";
+
 
 const Client = () => {
+
+  const formData = { customer_id: 0, consignee_id: 0 };
+
+
   const [isLoading, setIsLoading] = useState(true);
   const [formAction, setFormAction] = useState<string>("");
   const [formValues, setFormValues] = useState<IClientForm>(clientFormObj);
+  const [poanraFormValues, setPoaNraFormValues] = useState<IPOANRA_FORM>(formData);
   const [rows, setRows] = useState<IClientResponse[]>([]);
   const dispatch = useDispatch();
   const modalState = useSelector((state: any) => state.modalReducer);
@@ -25,7 +33,11 @@ const Client = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [offset, setOffset] = useState<number>(0);
   const [displayConsigneeForm, setDisplayConsigneeForm] = useState<boolean>(false);
+  const [displayPoaNraForm, setDisplayPoaNraForm] = useState<boolean>(false);
   const [customerId, setCustomerId] = useState<number>(0);
+  const [consigneeId, setConsigneeId] = useState<number>(0);
+  const [customerName, setCustomerName] = useState<string>("");
+  const [consigneeName, setConsigneeName] = useState<string>("");
   const [formValues_consignee, setFormValues_consignee] = useState<IConsigneeForm>(consigneeFormObj);
   const [rowCount, setRowCount] = useState<number>(0);
   const [pageIsLoading, setPageIsLoading] = useState<boolean>(false);
@@ -39,6 +51,8 @@ const Client = () => {
       setRows(data);
     };
     fetch();
+    console.log(formValues)
+    console.log(formValues_consignee)
   }, [rowsPerPage, offset, pageIsLoading]);
 
   const modalAction = (heading: string, display: boolean, isDelete: boolean, isDeleting: boolean = false) => {
@@ -99,20 +113,31 @@ const Client = () => {
         rows={rows}
         modalAction={modalAction}
         setCustomerId={setCustomerId}
+        setCustomerName = {setCustomerName}
         setDisplayConsigneeForm={setDisplayConsigneeForm}
         setPageIsLoading={setPageIsLoading}
       />
-    ) : (
+    ) : !displayPoaNraForm ? (
       <ConsigneeForm
         formValues={formValues_consignee}
         setFormValues={setFormValues_consignee}
         modalAction={modalAction}
-        customerName={formValues.full_name}
+        customerName={customerName}
         customerId={customerId}
+        setConsigneeId = {setConsigneeId}
+        setDisplayPoaNraForm={setDisplayPoaNraForm}
         setPageIsLoading={setPageIsLoading}
       />
-    );
-
+    ):(<POANRAForm
+      formValues={poanraFormValues}
+      setFormValues={setPoaNraFormValues}
+      modalAction={modalAction}
+      customerName={customerName}
+      customerId={customerId}
+      consigneeId={consigneeId}
+      consigneeName={formValues_consignee.full_name}
+      setPageIsLoading={setPageIsLoading}
+    />)
   return (
     <div style={{ padding: 20 }}>
       <h2>Clients ({rowCount})</h2>
