@@ -20,7 +20,7 @@ const CustomerForm = ({  customerName,consigneeName }: IProps) => {
           label="Customer Name"
           style={{ width: "100%" }}
           value={customerName}
-          name="country"
+          name="customer"
           variant="outlined"
         />
         {line}
@@ -31,7 +31,7 @@ const CustomerForm = ({  customerName,consigneeName }: IProps) => {
           label="Consignee Name"
           style={{ width: "100%" }}
           value={consigneeName}
-          name="country"
+          name="consignee"
           variant="outlined"
         />
       </form>

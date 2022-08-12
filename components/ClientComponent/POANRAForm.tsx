@@ -30,6 +30,7 @@ type IProps = {
   customerId: number;
   consigneeId: number
   consigneeName: string;
+  setDisplayContainerForm: Dispatch<SetStateAction<boolean>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const POANRAForm = ({formValues, setFormValues, modalAction,customerName, customerId, consigneeId, consigneeName, setPageIsLoading}: IProps) => {
+const POANRAForm = ({formValues, setFormValues, modalAction,customerName, customerId, consigneeId, consigneeName, setDisplayContainerForm,setPageIsLoading}: IProps) => {
    const classes = useStyles();
    const [isSaving, setIsSaving] = useState<boolean>(false);
    const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
@@ -88,11 +89,8 @@ const POANRAForm = ({formValues, setFormValues, modalAction,customerName, custom
       modalAction("", false, false);
     }
     else{
-    //  setConsigneeId(data.id)
-    //  setDisplayPoaNraForm(true)
-    }
-
-    } catch (e) {
+      setDisplayContainerForm(true) 
+    } }catch (e) {
       if(e instanceof Error){
         setIsSaving(false);
       setError(e.message);
@@ -104,7 +102,7 @@ const POANRAForm = ({formValues, setFormValues, modalAction,customerName, custom
   const renderButtons = () => (
     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
        <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSave("saveANDfill")}>
-            Save and fill poa/nra form
+            Save and fill container form
           </Button>
           <Button positive onClick={() => handleSave("saveANDclose")}>
             Save and close

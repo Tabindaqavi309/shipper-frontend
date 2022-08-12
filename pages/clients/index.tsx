@@ -12,19 +12,21 @@ import { handleModal } from "../../store/actions/modal";
 import { handleSnackBar, ISnackBar } from "../../store/actions/snackBar";
 import ConsigneeForm from "../../components/ClientComponent/ConsigneeForm";
 import POANRAForm from "../../components/ClientComponent/POANRAForm";
+import ContainerForm from "../../components/ClientComponent/ContainerForm";
 import { consigneeFormObj, IConsigneeForm } from "../../Types/consigneeTypes";
 import { IPOANRA_FORM, IPOANRA_Response, poa_nra_form_values } from "../../Types/poaNraTypes";
+import { IContainerForm ,containerFormObj} from "../../Types/containerTypes";
 
 
 const Client = () => {
 
   const formData = { customer_id: 0, consignee_id: 0 };
 
-
   const [isLoading, setIsLoading] = useState(true);
   const [formAction, setFormAction] = useState<string>("");
   const [formValues, setFormValues] = useState<IClientForm>(clientFormObj);
   const [poanraFormValues, setPoaNraFormValues] = useState<IPOANRA_FORM>(formData);
+  const [containerFormValues, setContainerFormValues] = useState<IContainerForm>(containerFormObj);
   const [rows, setRows] = useState<IClientResponse[]>([]);
   const dispatch = useDispatch();
   const modalState = useSelector((state: any) => state.modalReducer);
@@ -34,10 +36,11 @@ const Client = () => {
   const [offset, setOffset] = useState<number>(0);
   const [displayConsigneeForm, setDisplayConsigneeForm] = useState<boolean>(false);
   const [displayPoaNraForm, setDisplayPoaNraForm] = useState<boolean>(false);
+  const [displayContainerForm, setDisplayContainerForm] = useState<boolean>(false);
   const [customerId, setCustomerId] = useState<number>(0);
   const [consigneeId, setConsigneeId] = useState<number>(0);
+  const [containerId, setContainerId] = useState<number>(0);
   const [customerName, setCustomerName] = useState<string>("");
-  const [consigneeName, setConsigneeName] = useState<string>("");
   const [formValues_consignee, setFormValues_consignee] = useState<IConsigneeForm>(consigneeFormObj);
   const [rowCount, setRowCount] = useState<number>(0);
   const [pageIsLoading, setPageIsLoading] = useState<boolean>(false);
@@ -128,7 +131,8 @@ const Client = () => {
         setDisplayPoaNraForm={setDisplayPoaNraForm}
         setPageIsLoading={setPageIsLoading}
       />
-    ):(<POANRAForm
+    ): !displayContainerForm ?  (
+     <POANRAForm
       formValues={poanraFormValues}
       setFormValues={setPoaNraFormValues}
       modalAction={modalAction}
@@ -136,8 +140,19 @@ const Client = () => {
       customerId={customerId}
       consigneeId={consigneeId}
       consigneeName={formValues_consignee.full_name}
+      setDisplayContainerForm={setDisplayContainerForm}
       setPageIsLoading={setPageIsLoading}
-    />)
+    />): 
+    ( <ContainerForm 
+      formValues={containerFormValues}
+      setFormValues={setContainerFormValues}
+      modalAction={modalAction}
+      customerName={customerName}
+      customerId={customerId}
+     containerId ={containerId}
+      setContainerId ={setContainerId}
+      setPageIsLoading={setPageIsLoading}
+     />);
   return (
     <div style={{ padding: 20 }}>
       <h2>Clients ({rowCount})</h2>
