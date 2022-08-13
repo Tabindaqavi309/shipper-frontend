@@ -5,7 +5,6 @@ import ModalStep from "./ContainerDetails/ModalStep";
 import { IStep, IContainerForm, ICarFormValues, carFormValuesObj, containerFormObj, IContainerResponse } from "../../Types/containerTypes";
 import CustomerForm from "./ContainerDetails/CutomerForm";
 import { IClientResponse } from "../../Types/clientTypes";
-import { customerDropDownFullTextSearchAPI } from "../../actions/customer";
 import ContentForm from "./ContainerDetails/ContentForm";
 import { handleSaveContainerAPI, handleSaveCarAPI } from "../../actions/container";
 import CircularProgressComponent from "../SpinnerComponent/CircularProgress";
@@ -22,6 +21,7 @@ type IProps = {
   containerId:number;
   setContainerId: Dispatch<SetStateAction<number>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
+  setDisplayBookingConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
 const stepObj = [
@@ -78,7 +78,7 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
-const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId, setContainerId, setPageIsLoading }: IProps) => {
+const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
@@ -98,15 +98,14 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
     setStep(array);
   };
 
-  const handleNext = async () => {
+  const handleNext = async (action: string) => {
     try {
-      console.log("I am here 1")
+
       formValues.customer_id = customerId;
       const array = [...step];
       resetStep(array);
       const arrayLength = array.filter((result) => result.display).length;
       if (tabIndex < arrayLength - 1) {
-        console.log("I am here 2")
         setTabIndex((prev) => {
           prev++;
           array[prev].active = true;
@@ -131,11 +130,16 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
         setTabIndex(0);
       setSection(array[0].value);
        setStep(array);
+       if(action === "saveAndClose"){
+        setPageIsLoading(true);
        modalAction("", false, false);
+     }
+     else if(action === "saveAndFill"){
+      setDisplayBookingConfirmation(true)
+      }
       }
 
       if (array[tabIndex].value === "personal_effect") {
-        console.log("I am here 4")
         if (arrayLength >= 4) {
             setIsLoading(true);
             const data: any = await handleSaveContainerAPI(formValues);
@@ -153,14 +157,14 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
     const array = [...step];
     const arrayLength = array.filter((result) => result.display).length;
     if (tabIndex < arrayLength - 1) {
-      return (  <Button content="Next" primary icon="right arrow" labelPosition="right" onClick={handleNext} />)
+      return (  <Button content="Next" primary icon="right arrow" labelPosition="right" onClick={()=>handleNext("saveAndNext")} />)
     } else {
       return (
         <div> 
-        <Button color="grey" style={{ marginRight: 10 }} onClick={handleNext}>
+        <Button color="grey" style={{ marginRight: 10 }} onClick={()=>handleNext("saveAndFill")}>
              Save and fill booking confirmation
            </Button>
-           <Button positive onClick={handleNext}>
+           <Button positive onClick={()=>handleNext("saveAndClose")}>
              Save and close
            </Button>
         </div>   

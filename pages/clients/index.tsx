@@ -13,6 +13,8 @@ import { handleSnackBar, ISnackBar } from "../../store/actions/snackBar";
 import ConsigneeForm from "../../components/ClientComponent/ConsigneeForm";
 import POANRAForm from "../../components/ClientComponent/POANRAForm";
 import ContainerForm from "../../components/ClientComponent/ContainerForm";
+import BookingConfirmationForm from "../../components/ClientComponent/BookingConfirmationForm";
+import { IBookingReceipt_FORM, IBookingReceipt_Response } from "../../Types/bookingReceiptTypes";
 import { consigneeFormObj, IConsigneeForm } from "../../Types/consigneeTypes";
 import { IPOANRA_FORM, IPOANRA_Response, poa_nra_form_values } from "../../Types/poaNraTypes";
 import { IContainerForm ,containerFormObj} from "../../Types/containerTypes";
@@ -27,6 +29,7 @@ const Client = () => {
   const [formValues, setFormValues] = useState<IClientForm>(clientFormObj);
   const [poanraFormValues, setPoaNraFormValues] = useState<IPOANRA_FORM>(formData);
   const [containerFormValues, setContainerFormValues] = useState<IContainerForm>(containerFormObj);
+  const [bookingFormValues, setBookingFormValues] = useState<IBookingReceipt_FORM>(formData);
   const [rows, setRows] = useState<IClientResponse[]>([]);
   const dispatch = useDispatch();
   const modalState = useSelector((state: any) => state.modalReducer);
@@ -37,6 +40,7 @@ const Client = () => {
   const [displayConsigneeForm, setDisplayConsigneeForm] = useState<boolean>(false);
   const [displayPoaNraForm, setDisplayPoaNraForm] = useState<boolean>(false);
   const [displayContainerForm, setDisplayContainerForm] = useState<boolean>(false);
+  const [displayBookingConfirmation, setDisplayBookingConfirmation] = useState<boolean>(false);
   const [customerId, setCustomerId] = useState<number>(0);
   const [consigneeId, setConsigneeId] = useState<number>(0);
   const [containerId, setContainerId] = useState<number>(0);
@@ -142,15 +146,26 @@ const Client = () => {
       consigneeName={formValues_consignee.full_name}
       setDisplayContainerForm={setDisplayContainerForm}
       setPageIsLoading={setPageIsLoading}
-    />): 
-    ( <ContainerForm 
+    />):  !displayBookingConfirmation ?  ( 
+      <ContainerForm 
       formValues={containerFormValues}
       setFormValues={setContainerFormValues}
       modalAction={modalAction}
       customerName={customerName}
       customerId={customerId}
-     containerId ={containerId}
+      containerId ={containerId}
       setContainerId ={setContainerId}
+      setDisplayBookingConfirmation={setDisplayBookingConfirmation}
+      setPageIsLoading={setPageIsLoading}
+     />):
+     (< BookingConfirmationForm
+      formValues={bookingFormValues}
+      setFormValues={setBookingFormValues}
+      modalAction={modalAction}
+      customerName={customerName}
+      customerId={customerId}
+      consigneeId={consigneeId}
+      consigneeName={formValues_consignee.full_name}
       setPageIsLoading={setPageIsLoading}
      />);
   return (
