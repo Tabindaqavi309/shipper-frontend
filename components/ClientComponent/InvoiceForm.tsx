@@ -75,13 +75,14 @@ const InvoiceForm = ({
       }
 
         await createInvoice_API(newRequest);
-          setPageIsLoading(true);
+          setPageIsLoading(false);
           setDisplayConsigneeForm(false)
           setDisplayPoaNraForm(false)
           setDisplayContainerForm(false)
           setDisplayBookingConfirmation(false)
           setDisplayDockReceiptForm(false)
           setDisplayInvoiceForm(false)
+          setPageIsLoading(true);
           modalAction("", false, false);
 
     } catch (e) {
@@ -129,11 +130,16 @@ const InvoiceForm = ({
         {renderView()}
         <Details formAction={"new"} formValues={formValues} setFormValues={setFormValues} />
       </Modal.Content>
-      <Modal.Actions>
+      {/* <Modal.Actions>
         <Button primary onClick={handleSubmit} loading={isSaving}>
           {"Submit"}
         </Button>
-      </Modal.Actions>
+      </Modal.Actions> */}
+         <div style={{ display: "flex", justifyContent: "center", paddingBottom:"20px" }}>
+          <Button color="blue" onClick={handleSubmit}>
+            Submit
+          </Button>
+    </div>
       </div>
   );
 };
