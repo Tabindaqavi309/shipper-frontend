@@ -121,8 +121,7 @@ const PrintNra = () => {
                             <span style={{ fontSize: 18 }}>{row.customer_name},</span>
                           )}{" "}
                           <br />
-                          <span style={{ fontSize: 18 }}>{row.cus_address}</span>
-                          <br />
+                          <span style={{ fontSize: 18 }}><span>{row.cus_address!=="" ?<span>{row.cus_address+","}<br/></span>:""}</span></span>
                           <span style={{ fontSize: 18 }}>{row.cus_city !== null ? row.cus_city + ", " : ""}</span>
                           <span style={{ fontSize: 18 }}>{row.cus_state !== null ? row.cus_state + "," : ""}</span>
                           <br />
@@ -154,10 +153,8 @@ const PrintNra = () => {
                         <br />
                         <span style={{ fontSize: 18 }}>{row.con_name}</span>
                         <br />
-                        <span style={{ fontSize: 18 }}>{row.con_address},</span>
-                        <br />
-                        <span style={{ fontSize: 18 }}>{row.con_email !== "" ? row.con_email + "," : ""}</span>
-                        <br />
+                        <span style={{ fontSize: 18 }}><span>{row.con_address!=="" ?<span>{row.con_address+","}<br/></span>:""}</span></span>
+                        <span style={{ fontSize: 18 }}><span>{row.con_email !== "" ? <span>{row.con_email+","}<br/></span> : ""}</span></span>
                         <span style={{ fontSize: 18 }}>
                           {row.con_city}, {row.con_state},
                         </span>
@@ -386,9 +383,9 @@ const PrintNra = () => {
                       <br />
                       <br />
                       <b>{row.container_type === "container" ? "SEAL #" : "IN TRANSIT"} :</b>
-                      <br />
                       <span style={{ fontSize: 18 }}>{row.container_type === "container" ? row.seal_number : row.in_transit}</span>
                       <br />
+                      <br/>
                       <b>CUT OFF DATE</b>
                       <br />
                       {row.cut_off_date !== null ? moment(row.cut_off_date).format("l") : ""} <br />
@@ -434,9 +431,9 @@ const PrintNra = () => {
                         <div>
                           <p id="text_field">{row.personal_effect !== null && row.personal_effect !== "" ? row.personal_effect.toUpperCase() : ""}</p>
                         </div>
+                        <div>AES#: {row.aes_number}</div>
                       </div>
-                      <div>AES#: {row.aes_number}</div>
-                      <span style={{ fontSize: 19 }}>{row.demurrage}</span>
+                       <span style={{ fontSize: 19 }}>{row.demurrage}</span>
                       <br />
                       <div style={{ fontSize: 16, marginLeft: 350 }}>
                         <span>

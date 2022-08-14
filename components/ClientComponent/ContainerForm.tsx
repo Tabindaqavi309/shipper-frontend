@@ -1,30 +1,27 @@
 import React, { Dispatch, SetStateAction, SyntheticEvent, useState, useEffect } from "react";
 import { Button, Icon, Modal, TextArea, Form, Loader } from "semantic-ui-react";
 
-import ModalStep from "./ModalStep";
+import ModalStep from "./ContainerDetails/ModalStep";
 import { IStep, IContainerForm, ICarFormValues, carFormValuesObj, containerFormObj, IContainerResponse } from "../../Types/containerTypes";
-import CustomerForm from "./CutomerForm";
+import CustomerForm from "./ContainerDetails/CutomerForm";
 import { IClientResponse } from "../../Types/clientTypes";
-import { fetchCustomers } from "../../actions/customer";
-import ContentForm from "./ContentForm";
+import ContentForm from "./ContainerDetails/ContentForm";
 import { handleSaveContainerAPI, handleSaveCarAPI } from "../../actions/container";
 import CircularProgressComponent from "../SpinnerComponent/CircularProgress";
-import CarsComponent from "./CarsComponent";
-import ContainerType from "./ContainerType";
+import CarsComponent from "./ContainerDetails/CarsComponent";
+import ContainerType from "./ContainerDetails/ContainerType";
 import { IAutoComplete } from "../../Types/poaNraTypes";
 
-type ModalProps = {
-  size?: string | undefined;
-  open?: boolean | undefined;
-};
-
 type IProps = {
-  size?: any;
-  open: boolean;
-  closeModal: () => void;
   formValues: IContainerForm;
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
+  modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
+  customerName: string;
+  customerId: number;
+  containerId:number;
+  setContainerId: Dispatch<SetStateAction<number>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
+  setDisplayBookingConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
 const stepObj = [
@@ -81,27 +78,17 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
-const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, setPageIsLoading }: IProps) => {
+const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
   const [customerData, setCustomerData] = useState<IClientResponse[]>([]);
-  const [containerId, setContainerId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [carFormValues, setCarFormValues] = useState<ICarFormValues>(carFormValuesObj);
   const [carData, setCarData] = useState<ICarFormValues[]>([]);
 
   const [checkBox, setCheckBox] = useState<ICheckBox>(checkBoxArray);
   const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { data }: any = await fetchCustomers(0, 20);
-      setCustomerData(data);
-    };
-
-    fetch();
-  }, []);
 
   const resetStep = (array: IStep[]) => {
     for (let i = 0; i < step.length; i++) {
@@ -111,8 +98,10 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
     setStep(array);
   };
 
-  const handleNext = async () => {
+  const handleNext = async (action: string) => {
     try {
+
+      formValues.customer_id = customerId;
       const array = [...step];
       resetStep(array);
       const arrayLength = array.filter((result) => result.display).length;
@@ -141,7 +130,13 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         setTabIndex(0);
       setSection(array[0].value);
        setStep(array);
-        closeModal();
+       if(action === "saveAndClose"){
+        setPageIsLoading(true);
+       modalAction("", false, false);
+     }
+     else if(action === "saveAndFill"){
+      setDisplayBookingConfirmation(true)
+      }
       }
 
       if (array[tabIndex].value === "personal_effect") {
@@ -150,7 +145,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
             const data: any = await handleSaveContainerAPI(formValues);
             setIsLoading(false);
             setContainerId(data.id)
-    
+  
         }
       }
     } catch (err) {
@@ -162,9 +157,18 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
     const array = [...step];
     const arrayLength = array.filter((result) => result.display).length;
     if (tabIndex < arrayLength - 1) {
-      return <Button content="Next" primary icon="right arrow" labelPosition="right" onClick={handleNext} />;
+      return (  <Button content="Next" primary icon="right arrow" labelPosition="right" onClick={()=>handleNext("saveAndNext")} />)
     } else {
-      return <Button content="Submit" primary icon="right arrow" labelPosition="right" onClick={handleNext} />;
+      return (
+        <div> 
+        <Button color="grey" style={{ marginRight: 10 }} onClick={()=>handleNext("saveAndFill")}>
+             Save and fill booking confirmation
+           </Button>
+           <Button positive onClick={()=>handleNext("saveAndClose")}>
+             Save and close
+           </Button>
+        </div>   
+      );
     }
   };
 
@@ -187,7 +191,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
   const renderSection = () => {
     switch (section) {
       case "customer":
-        return <CustomerForm formValues={formValues} setFormValues={setFormValues} customerData={customerData} />;
+        return <CustomerForm formValues={formValues} setFormValues={setFormValues} customerName={customerName} />;
       case "content":
         return <ContentForm step={step} setStep={setStep} setFormValues={setFormValues} />;
       case "roro":
@@ -236,18 +240,12 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
   };
 
   return (
-    <Modal size={size} open={open} onClose={closeModal}>
-      <Modal.Header>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
-            <p>New Container</p>
-          </div>
-          <div>
-            <Icon name="close" style={{ cursor: "pointer" }} onClick={closeModal} />
-          </div>
-        </div>
-      </Modal.Header>
-      <Modal.Content scrolling>
+    <div style={{ width: 1000, padding: 20 }}>
+    <div>
+      <p style={{ marginBottom: 5, fontSize: 20 }}>
+        Adding Consignee for <strong>{customerName}</strong>
+      </p>
+  <Modal.Content scrolling>
         <ModalStep step={step} />
         {renderSection()}
       </Modal.Content>
@@ -256,13 +254,17 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
           <CircularProgressComponent />
         ) : (
           <div>
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
             {tabIndex !== 0 && <Button content="Previous" secondary icon="left arrow" labelPosition="left" onClick={handlePrevious} />}
             {renderNextButton()}
+            </div>
+          
           </div>
         )}
       </Modal.Actions>
-    </Modal>
+    </div>
+    </div>
   );
 };
 
-export default ContainerModal;
+export default ContainerForm;

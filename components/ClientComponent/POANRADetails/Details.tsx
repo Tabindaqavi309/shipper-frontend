@@ -16,6 +16,7 @@ const Details = ({ inputFunction, setInputFunction, setOptionData, optionData, f
   useEffect(() => {
     fetchAutoCompleteAPI().then((data) => {
       setOptionData(data);
+      console.log(data)
     });
   }, []);
 
@@ -56,6 +57,7 @@ const Details = ({ inputFunction, setInputFunction, setOptionData, optionData, f
 
   const renderInputs = () => {
     return inputFunction.map((result, index) => {
+      console.log(result.name)
       if (result.type === "dropDown") {
         const filter = optionData.filter((value) => value.type === result.name);
         return (

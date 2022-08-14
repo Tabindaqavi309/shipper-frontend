@@ -81,7 +81,7 @@ export enum EBOOKING_RECEIPTS_DATA {
 
 export const generateInput = (data: IBookingReceipt_Response): IGenerateInput[] => [
   {
-    type: "dropDown",
+    type: "text",
     value: data.vessel_name,
     name: EBOOKING_RECEIPTS_DATA.VESSEL_NAME,
     label: "Vessel Name",
@@ -89,7 +89,7 @@ export const generateInput = (data: IBookingReceipt_Response): IGenerateInput[] 
     radioArray: [],
   },
   {
-    type: "dropDown",
+    type: "text",
     value: data.voyage_number,
     name: EBOOKING_RECEIPTS_DATA.VOYAGE_NUMBER,
     label: "Voyage Number",

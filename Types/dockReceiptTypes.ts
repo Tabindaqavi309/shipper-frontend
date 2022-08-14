@@ -61,7 +61,7 @@ export const dock_receipt_form_values: IDockReceipt_Response = {
   aes_number: "",
   originals_to_be_released: "",
   client_as_agent: false,
-  forwarding_agent_references: "",
+  forwarding_agent_references: "OLDSAILORS OCEAN SHIPPING LLC, 13903 CHADSWORTH TERRACE LAUREL, MD, 20707, USA, Tel:301-213-6961",
   for_transhipment_to: "",
   point_and_country_of_origin: "",
 };
@@ -159,7 +159,7 @@ export const generateInput = (data: IDockReceipt_Response): IGenerateInput[] => 
   },
 
   {
-    type: "text",
+    type: "dropDown",
     value: data.originals_to_be_released,
     name: EDOCK_RECEIPTS_DATA.ORIGINALS_TO_BE_RELEASED,
     label: "Originals to be released",

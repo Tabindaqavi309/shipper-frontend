@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
+import { Button } from "semantic-ui-react";
 import { handleSaveAPI } from "../../actions/consignee";
 import CircularProgress from "../SpinnerComponent/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,8 @@ type IProps = {
   modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
   customerName: string;
   customerId: number;
+  setConsigneeId:  Dispatch<SetStateAction<number>>;
+  setDisplayPoaNraForm: Dispatch<SetStateAction<boolean>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -34,40 +36,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setPageIsLoading }: IProps): JSX.Element => {
+const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setConsigneeId, setDisplayPoaNraForm, setPageIsLoading }: IProps): JSX.Element => {
   const classes = useStyles();
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [other, setOther] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const dispatch = useDispatch();
   const snackBar = useSelector((state: any) => state.snackBarReducer);
   const countriesData: any = [...countries];
 
   const handleChange = (event: any) => {
-    const { value, name } = event.target;
+    let { value, name } = event.target;
+    if(value ==""){
+      setOther(false)
+     }
+
+     if(value == "OTHER"){
+      value = ""
+      setOther(true)
+     }
 
     setFormValues((prev: any) => {
       return {
         ...prev,
-        [name]: value,
+        [name]: value.toUpperCase(),
       };
     });
   };
 
   const handleSave = async (action: string) => {
     try {
+
       const newValues = { ...formValues };
       newValues.customer_id = customerId;
 
       setIsSaving(true);
-      await handleSaveAPI(newValues);
-      setIsSaving(false);
+      const data: any =  await handleSaveAPI(newValues);
 
-      const snackObj: ISnackBar = { ...snackBar };
-      snackObj.display_snackBar = true;
-      snackObj.message = "Consignee added";
-      dispatch(handleSnackBar(snackObj));
+     if(action === "saveANDclose"){
       setPageIsLoading(true);
       modalAction("", false, false);
+    }
+    else{
+     setConsigneeId(data.id)
+     setDisplayPoaNraForm(true)
+    }
+
     } catch (e) {
       if(e instanceof Error){
         setIsSaving(false);
@@ -78,16 +92,26 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
 
   const renderButtons = () => (
     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
-      <Button variant="contained" color="secondary" onClick={() => handleSave("saveANDclose")}>
-        Save and close
-      </Button>
+       <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSave("saveANDfill")}>
+            Save and fill poa/nra form
+          </Button>
+          <Button positive onClick={() => handleSave("saveANDclose")}>
+            Save and close
+          </Button>
     </div>
   );
 
   const renderCountry = () => {
     return (
       <FormControl variant="outlined" className={classes.formControlCountry}>
-        <Select
+     {other ? <TextField
+          label="Country"
+          style={{ width: "100%" }}
+          onChange={handleChange}
+          value={formValues.country}
+          name="country"
+          variant="outlined"
+        /> :  <Select
           native
           value={formValues.country}
           onChange={handleChange}
@@ -105,7 +129,7 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
               {result.name}
             </option>
           ))}
-        </Select>
+        </Select>}
       </FormControl>
     );
   };
