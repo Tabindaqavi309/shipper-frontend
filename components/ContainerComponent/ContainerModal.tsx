@@ -215,7 +215,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
                   };
                 });
               }}
-              value={formValues.personal_effect}
+              value={formValues.personal_effect.toUpperCase()}
             />
           </Form>
         );

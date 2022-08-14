@@ -219,7 +219,7 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
                   };
                 });
               }}
-              value={formValues.personal_effect}
+              value={formValues.personal_effect.toUpperCase()}
             />
           </Form>
         );

@@ -24,7 +24,7 @@ type IProps = {
   customerId: number;
   consigneeId: number
   consigneeName: string;
-  // setDisplayContainerForm: Dispatch<SetStateAction<boolean>>;
+  setDisplayDockReceiptForm: Dispatch<SetStateAction<boolean>>;
 };
 
 type INewObj = {
@@ -39,6 +39,7 @@ const BookingConfirmationForm = ({
   setPageIsLoading,
   modalAction,
   setFormValues,
+  setDisplayDockReceiptForm,
   formValues
 }: IProps) => {
   const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
@@ -144,7 +145,7 @@ const BookingConfirmationForm = ({
         modalAction("", false, false);
       }
       else{
-     //   setDisplayContainerForm(true) 
+        setDisplayDockReceiptForm(true) 
       }
     } catch (e) {
       if (e instanceof Error) {

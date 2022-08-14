@@ -98,7 +98,7 @@ const ClientForm = ({
       if(value ==""){
         setOther(false);
       }
-     if (value == "Other") {
+     if (value == "OTHER") {
       formValues.city = ""
         value = ""
         setOther(true);
@@ -108,7 +108,7 @@ const ClientForm = ({
     setFormValues((prev: any) => {
       return {
         ...prev,
-        [name]: value,
+        [name]: value.toUpperCase(),
       };
     });
   };

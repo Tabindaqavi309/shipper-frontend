@@ -100,7 +100,7 @@ const POANRAForm = ({formValues, setFormValues, modalAction,customerName, custom
 
 
   const renderButtons = () => (
-    <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
+    <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom:"20px" }}>
        <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSave("saveANDfill")}>
             Save and fill container form
           </Button>

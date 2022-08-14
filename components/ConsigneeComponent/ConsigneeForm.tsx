@@ -64,7 +64,7 @@ const ConsigneeForm = ({
       setOther(false)
      }
 
-     if(value == "Other"){
+     if(value == "OTHER"){
       value = ""
       setOther(true)
      }
@@ -72,7 +72,7 @@ const ConsigneeForm = ({
     setFormValues((prev: any) => {
       return {
         ...prev,
-        [name]: value,
+        [name]: value.toUpperCase(),
       };
     });
   };

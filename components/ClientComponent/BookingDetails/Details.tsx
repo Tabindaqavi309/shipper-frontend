@@ -22,7 +22,7 @@ const Details = ({ inputFunction, setInputFunction, setOptionData, optionData, f
 
   const handleInput = (index: number, value: string) => {
     const copy = [...inputFunction];
-    copy[index].value = value;
+    copy[index].value = value.toUpperCase();
     setInputFunction(copy);
   };
 

@@ -14,6 +14,10 @@ import ConsigneeForm from "../../components/ClientComponent/ConsigneeForm";
 import POANRAForm from "../../components/ClientComponent/POANRAForm";
 import ContainerForm from "../../components/ClientComponent/ContainerForm";
 import BookingConfirmationForm from "../../components/ClientComponent/BookingConfirmationForm";
+import DockReceiptForm from "../../components/ClientComponent/DockReceiptForm";
+import InvoiceForm from "../../components/ClientComponent/InvoiceForm";
+import { IDockReceipt_FORM, IDockReceipt_Response, IBookingDropDownData } from "../../Types/dockReceiptTypes";
+import { IInvoice_Response, invoice_form_values } from "../../Types/invoiceTypes";
 import { IBookingReceipt_FORM, IBookingReceipt_Response } from "../../Types/bookingReceiptTypes";
 import { consigneeFormObj, IConsigneeForm } from "../../Types/consigneeTypes";
 import { IPOANRA_FORM, IPOANRA_Response, poa_nra_form_values } from "../../Types/poaNraTypes";
@@ -23,6 +27,8 @@ import { IContainerForm ,containerFormObj} from "../../Types/containerTypes";
 const Client = () => {
 
   const formData = { customer_id: 0, consignee_id: 0 };
+  const dockReceiptFormData = { customer_id: 0, consignee_id: 0, container_id: 0, booking_id: 0, total_weight: 0, weight: 0, measurement: 0 };
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [formAction, setFormAction] = useState<string>("");
@@ -30,6 +36,8 @@ const Client = () => {
   const [poanraFormValues, setPoaNraFormValues] = useState<IPOANRA_FORM>(formData);
   const [containerFormValues, setContainerFormValues] = useState<IContainerForm>(containerFormObj);
   const [bookingFormValues, setBookingFormValues] = useState<IBookingReceipt_FORM>(formData);
+  const [dockReceiptFormValues, setDockReceiptFormValues] = useState<IDockReceipt_FORM>(dockReceiptFormData);
+  const [invoiceFormValues, setInvoiceFormValues] = useState<IInvoice_Response>(invoice_form_values);
   const [rows, setRows] = useState<IClientResponse[]>([]);
   const dispatch = useDispatch();
   const modalState = useSelector((state: any) => state.modalReducer);
@@ -41,6 +49,8 @@ const Client = () => {
   const [displayPoaNraForm, setDisplayPoaNraForm] = useState<boolean>(false);
   const [displayContainerForm, setDisplayContainerForm] = useState<boolean>(false);
   const [displayBookingConfirmation, setDisplayBookingConfirmation] = useState<boolean>(false);
+  const [displayDockReceiptForm, setDisplayDockReceiptForm] = useState<boolean>(false);
+  const [displayInvoiceForm, setDisplayInvoiceForm] = useState<boolean>(false);
   const [customerId, setCustomerId] = useState<number>(0);
   const [consigneeId, setConsigneeId] = useState<number>(0);
   const [containerId, setContainerId] = useState<number>(0);
@@ -157,10 +167,38 @@ const Client = () => {
       setContainerId ={setContainerId}
       setDisplayBookingConfirmation={setDisplayBookingConfirmation}
       setPageIsLoading={setPageIsLoading}
-     />):
+     />) : !displayDockReceiptForm ?
      (< BookingConfirmationForm
       formValues={bookingFormValues}
       setFormValues={setBookingFormValues}
+      modalAction={modalAction}
+      customerName={customerName}
+      customerId={customerId}
+      consigneeId={consigneeId}
+      consigneeName={formValues_consignee.full_name}
+      setDisplayDockReceiptForm={setDisplayDockReceiptForm}
+      setPageIsLoading={setPageIsLoading}
+     />) : !displayInvoiceForm ?
+     (< DockReceiptForm
+      formValues={dockReceiptFormValues}
+      setFormValues={setDockReceiptFormValues}
+      modalAction={modalAction}
+      customerName={customerName}
+      customerId={customerId}
+      consigneeId={consigneeId}
+      consigneeName={formValues_consignee.full_name}
+      setDisplayInvoiceForm={setDisplayInvoiceForm}
+      setPageIsLoading={setPageIsLoading}
+     />) : (
+     <InvoiceForm
+     formValues={invoiceFormValues}
+      setFormValues={setInvoiceFormValues}
+      setDisplayConsigneeForm={setDisplayConsigneeForm}
+      setDisplayPoaNraForm={setDisplayPoaNraForm}
+      setDisplayContainerForm={setDisplayContainerForm}
+      setDisplayBookingConfirmation={setDisplayBookingConfirmation}
+      setDisplayDockReceiptForm={setDisplayDockReceiptForm}
+      setDisplayInvoiceForm={setDisplayInvoiceForm}
       modalAction={modalAction}
       customerName={customerName}
       customerId={customerId}
