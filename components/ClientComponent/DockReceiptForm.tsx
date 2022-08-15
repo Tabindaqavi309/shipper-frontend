@@ -67,7 +67,6 @@ const DockReceiptForm = ({
   
       setInputFunction(generateInput(dock_receipt_form_values));
 
-
       setFormValues({
         customer_id: customerId,
         consignee_id: formValues.consignee_id,
@@ -75,17 +74,16 @@ const DockReceiptForm = ({
         booking_id: formValues.booking_id,
         total_weight: formValues.total_weight,
         weight: formValues.weight,
-        measurement: formValues.measurement
+        measurement: formValues.measurement,
       });
-
-      const arr = generateInput(formValues);
+  
       setEffectSection({
         personal_effect: "",
         weight: 0,
         measurement: 0,
       });
 
-      setInputFunction(arr);
+ 
   }, []);
 
   const renderBookingView = () => {

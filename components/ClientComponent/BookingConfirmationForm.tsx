@@ -50,15 +50,12 @@ const BookingConfirmationForm = ({
   useEffect(() => {
 
       setInputFunction(generateInput(booking_receipt_form_values));
-    
+
       setFormValues({
         customer_id:customerId,
         consignee_id: consigneeId
       });
 
-  const arr = generateInput(formValues);
- 
-      setInputFunction(arr);
     }
   , []);
 
@@ -150,8 +147,8 @@ const BookingConfirmationForm = ({
     } catch (e) {
       if (e instanceof Error) {
         // ✅ TypeScript knows err is Error
-        setErrorMessage(e.message);
-      setError(true);
+       // setErrorMessage(e.message);
+     // setError(true);
       setIsSaving(false);
       setPageIsLoading(false);
       } else {
@@ -159,7 +156,7 @@ const BookingConfirmationForm = ({
       }
      
       setTimeout(() => {
-        setError(false);
+       // setError(false);
       }, 4000);
     }
   };
