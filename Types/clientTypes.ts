@@ -32,16 +32,6 @@ export type IClientForm = {
   export type IClientSearchResponse= {
     id: number;
     full_name: string;
-    phone_number: string;
-    email: string;
-    address: string;
-    state: string;
-    city: string;
-    zipcode: string;
-    irs_tax_id: string;
-    passport_number: string;
-    fax: string;
-    ssn: string;
   };
   
   
