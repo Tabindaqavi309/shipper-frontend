@@ -34,9 +34,9 @@ type IProps = {
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-// type INewObj = {
-//   [key: string]: string | boolean | Date | number | undefined;
-// };
+type INewObj = {
+  [key: string]: string | boolean | Date | number | undefined;
+};
 
 
 const useStyles = makeStyles((theme) => ({
