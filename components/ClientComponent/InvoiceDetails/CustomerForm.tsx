@@ -26,6 +26,7 @@ const CustomerForm = ({ formValues, setFormValues, customerId,customerName, setD
       text: value.full_name,
       value: value.id,
     }));
+    
 
   return (
     <div style={{ marginBottom: 20 }}>

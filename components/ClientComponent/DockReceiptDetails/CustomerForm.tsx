@@ -54,6 +54,8 @@ const CustomerForm = ({ formValues, setFormValues,customerId, customerName, setC
         <p style={{ fontSize: 16 }}>
           <strong>Customer</strong>
         </p>
+
+        
         <Dropdown
           placeholder="Search by customer name"
           search={(data, inputValues) => {
