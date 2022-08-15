@@ -1,5 +1,5 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
-import { IClientResponse } from "../../../Types/clientTypes";
+import { IClientResponse,IClientSearchResponse } from "../../../Types/clientTypes";
 import { Dropdown } from "semantic-ui-react";
 import { customerDropDownFullTextSearchAPI } from "../../../actions/customer";
 import { fetchDockReceiptByCustomerId } from "../../../actions/invoice";
@@ -20,7 +20,7 @@ const CustomerForm = ({ formValues, setFormValues, customerId,customerName, setD
   const [customerData, setCustomerData] = useState([{id:customerId,full_name:customerName}]);
   const responseData = customerData as any;
 
-  const customerOptions = (customerData: IClientResponse[]) =>
+  const customerOptions = (customerData: IClientSearchResponse[]) =>
     responseData.map((value: any, index: number) => ({
       key: index,
       text: value.full_name,
