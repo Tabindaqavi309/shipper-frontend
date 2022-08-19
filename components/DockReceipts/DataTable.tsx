@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { makeStyles, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination } from "@material-ui/core";
-import { IDockReceipt_Response } from "../../Types/dockReceiptTypes";
+import { IDockReceipt_Response} from "../../Types/dockReceiptTypes";
 import { Button } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { handleModal } from "../../store/actions/modal";
