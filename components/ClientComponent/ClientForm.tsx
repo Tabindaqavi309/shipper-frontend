@@ -48,6 +48,7 @@ const ClientForm = ({
   const classes = useStyles();
   const [disableCity, setDisableCity] = useState<boolean>(true);
   const [other, setOther] = useState<boolean>(false);
+  const [cityOther, setCityOther] = useState<boolean>(false);
   const [cityData, setCityData] = useState<Array<[string]>>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -91,9 +92,9 @@ const ClientForm = ({
     let { value, name } = event.target;
     if (name === "state") {
       if (value !== "") {
-
+         setCityOther(false)
         renderCityData(value);
-        setDisableCity(false);
+        setDisableCity(false);     
       }
       if(value ==""){
         setOther(false);
@@ -104,6 +105,13 @@ const ClientForm = ({
         setOther(true);
       }
       
+    }
+    if(name === "city"){
+      if(value === "OTHER"){
+        formValues.city = ""
+        value =""
+        setCityOther(true)
+      }
     }
     setFormValues((prev: any) => {
       return {
@@ -149,7 +157,7 @@ const ClientForm = ({
   const renderCity = () => {
     return (
       <FormControl variant="outlined" className={classes.formControl}>
-       {other ? <TextField
+       {other || cityOther? <TextField
           label="City"
           style={{ width: "100%" }}
           onChange={handleChange}
