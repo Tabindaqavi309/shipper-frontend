@@ -16,6 +16,7 @@ import ConsigneeForm from "./Form/ConsigneeForm";
 import Details from "./Form/Details";
 import { findConsigneeByCustomerId } from "../../actions/poa_nra";
 import { createDockReceipt_API, handleUpdateDock_Receipt_API, fetchContainerByCustomerId } from "../../actions/dockReceipts";
+import { fetchDockReceiptByCustomerId, createInvoice_API, handleUpdateInvoice_Receipt_API } from "../../actions/invoice";
 import BookingReceiptsDropDown from "./Form/BookingReceiptsDropDown";
 import Container from "./Form/Container";
 import { ICarFormValues, IContainerResponse, createEffectInputsPerContainer, ICarData } from "../../Types/containerTypes";
@@ -341,7 +342,9 @@ const FormModal = ({
         const id = newObj.id as number;
         await handleUpdateDock_Receipt_API(data, id, requestBody);
       } else {
-        await createDockReceipt_API(requestBody, data);
+        const obj: any = await createDockReceipt_API(requestBody, data); 
+        await createInvoice_API({ id: 0,customer_id: obj.customer_id,dock_receipt_id:obj.id, date_added: new Date()});
+
       }
       setIsSaving(false);
       setPageIsLoading(false);
