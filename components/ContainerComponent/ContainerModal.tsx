@@ -241,7 +241,12 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <p>New Container</p>
-          </div>
+            <a style={{fontSize:15}} href={"http://cube.hoegh.com"}>cube.hoegh.com, </a>
+            <a style={{fontSize:15}} href={"http://www.carfax.com"}>CarFax, </a>
+            <a style={{fontSize:15}} href={"https://www.net.grimaldi.co.uk/GNET45/"}>grimaldi.co.uk, </a>
+            <a style={{fontSize:15}} href={"https://www.msc.com/en/g"}>msc, </a>
+            <a style={{fontSize:15}} href={"https://www.maersk.com/tracking/#tracking"}>Maersk</a>
+           </div>
           <div>
             <Icon name="close" style={{ cursor: "pointer" }} onClick={closeModal} />
           </div>

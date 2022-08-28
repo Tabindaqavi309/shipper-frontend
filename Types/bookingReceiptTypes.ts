@@ -14,7 +14,7 @@ export type IBookingReceipt_Response = {
   carrier: string;
   cut_off_date: Date;
   sail_date: Date;
-  arrival_date: Date;
+  arrival_date: Date | null;
   commodity: string;
   type_of_move: string;
   pickup_terminal: string;
@@ -40,7 +40,7 @@ export const booking_receipt_form_values: IBookingReceipt_Response = {
   carrier: "",
   cut_off_date: new Date(),
   sail_date: new Date(),
-  arrival_date: new Date(),
+  arrival_date: null,
   commodity: "",
   type_of_move: "",
   pickup_terminal: "",
