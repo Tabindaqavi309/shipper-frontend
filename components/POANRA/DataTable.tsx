@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, SyntheticEvent, useState } from "react
 import { makeStyles, Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination } from "@material-ui/core";
 import { IPOANRA_Response, IPOANRA_FORM } from "../../Types/poaNraTypes";
 import { Button } from "semantic-ui-react";
+import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { handleModal } from "../../store/actions/modal";
 import ModalComponent from "../ModalComponent";
@@ -197,7 +198,9 @@ const DataTable = ({
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={`${indexId}-row1`}>
                   {columns.map((column: any, index: number) => {
-                    const value = row[column.id];
+                    let value = row[column.id];        
+                    if( column.id === "date_added" ||column.id === "effective_date"|| column.id ==="expiration_date") {
+                      value = moment(row[column]).format("MM/DD/YYYY")}
                     return (
                       <TableCell key={`${index}-row2`} align={column.align}>
                         {value}
