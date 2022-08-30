@@ -242,9 +242,13 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
   return (
     <div style={{ width: 1000, padding: 20 }}>
     <div>
-      <p style={{ marginBottom: 5, fontSize: 20 }}>
-        Adding Consignee for <strong>{customerName}</strong>
-      </p>
+        <div>
+            <a style={{fontSize:15}} href={"http://cube.hoegh.com"} target="_blank">cube.hoegh.com, </a>
+            <a style={{fontSize:15}} href={"http://www.carfax.com"} target="_blank">CarFax, </a>
+            <a style={{fontSize:15}} href={"https://www.net.grimaldi.co.uk/GNET45/"} target="_blank">grimaldi.co.uk, </a>
+            <a style={{fontSize:15}} href={"https://www.msc.com/en/g"} target="_blank">msc, </a>
+            <a style={{fontSize:15}} href={"https://www.maersk.com/tracking/#tracking"}  target="_blank">Maersk</a>
+           </div>
   <Modal.Content scrolling>
         <ModalStep step={step} />
         {renderSection()}
