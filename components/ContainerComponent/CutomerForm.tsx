@@ -13,10 +13,8 @@ type IProps = {
 const CustomerForm = ({ formValues, setFormValues, customerData }: IProps) => {
   const [searchData, setSearchData] = useState<IClientResponse[]>([]);
 
-  const responseData = customerData;
-
   const customerOptions = (customerData: IClientResponse[]) =>
-    responseData.map((value: any, index: number) => ({
+    customerData.map((value: any, index: number) => ({
       key: index,
       text: value.full_name,
       value: value.id,
@@ -32,7 +30,7 @@ const CustomerForm = ({ formValues, setFormValues, customerData }: IProps) => {
           placeholder="Search by customer name"
           search={(data, inputValues) => {
             customerDropDownFullTextSearchAPI(inputValues).then((result: any) => {
-              setSearchData(result);
+              setSearchData(result.data);
             });
             return customerOptions(searchData);
           }}
