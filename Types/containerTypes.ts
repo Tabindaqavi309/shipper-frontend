@@ -17,6 +17,8 @@ export type IContainerResponse = {
   in_transit: string;
 };
 
+export type IRadioBoxArray = { label: string; value:string, isChecked: boolean };
+
 export type IContainerForm = {
   date_added: Date;
   customer_id: number;

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, SyntheticEvent, useState, useEffect } 
 import { Button, Icon, Modal, TextArea, Form, Loader } from "semantic-ui-react";
 
 import ModalStep from "./ModalStep";
-import { IStep, IContainerForm, ICarFormValues, carFormValuesObj, containerFormObj, IContainerResponse } from "../../Types/containerTypes";
+import { IStep, IContainerForm, ICarFormValues, carFormValuesObj,IRadioBoxArray, containerFormObj, IContainerResponse } from "../../Types/containerTypes";
 import CustomerForm from "./CutomerForm";
 import { IClientResponse } from "../../Types/clientTypes";
 import { fetchCustomers } from "../../actions/customer";
@@ -11,7 +11,7 @@ import { handleSaveContainerAPI, handleSaveCarAPI } from "../../actions/containe
 import CircularProgressComponent from "../SpinnerComponent/CircularProgress";
 import CarsComponent from "./CarsComponent";
 import ContainerType from "./ContainerType";
-import { IAutoComplete } from "../../Types/poaNraTypes";
+import { IAutoComplete, IRadioArray } from "../../Types/poaNraTypes";
 
 type ModalProps = {
   size?: string | undefined;
@@ -37,21 +37,21 @@ const stepObj = [
     display: true,
   },
   {
-    title: "Content",
-    description: "Type of content this container has",
-    value: "content",
+    title: "Description",
+    description: "Is this roro or container",
+    value: "description",
     active: false,
     disabled: true,
     display: true,
   },
-  {
-    title: "Roro",
-    description: "Roro container",
-    value: "roro",
-    active: false,
-    disabled: true,
-    display: true,
-  },
+  // {
+  //   title: "content",
+  //   description: "Container contains car",
+  //   value: "content",
+  //   active: false,
+  //   disabled: true,
+  //   display: true,
+  // },
   {
     title: "Personal Effect",
     description: "Personal or household items",
@@ -81,6 +81,15 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
+const radioBoxArray: IRadioBoxArray[] = [{
+  value: "roro",
+  label: "roro",
+  isChecked: false,
+},{
+  value: "container",
+  label: "container",
+  isChecked: false,
+}];
 const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -90,8 +99,10 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [carFormValues, setCarFormValues] = useState<ICarFormValues>(carFormValuesObj);
   const [carData, setCarData] = useState<ICarFormValues[]>([]);
-
+  const [displayContent, setDisplayContent] = useState<boolean>(false);
+  const [displayCars, setDisplayCars] = useState<boolean>(false);
   const [checkBox, setCheckBox] = useState<ICheckBox>(checkBoxArray);
+  const [radioArray, setRadioArray] = useState<IRadioBoxArray[]>(radioBoxArray);
   const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
 
   useEffect(() => {
@@ -153,6 +164,9 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
     
         }
       }
+      // if(displayContent){
+      //   stepObj[2].display = true 
+      // }
     } catch (err) {
       setIsLoading(false);
     }
@@ -182,25 +196,29 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
       setSection(array[tabIndex - 1].value);
       setStep(array);
     }
+    // if(displayContent){
+    //   stepObj[2].display = true 
+    // }
+  
+
   };
 
   const renderSection = () => {
     switch (section) {
       case "customer":
         return <CustomerForm formValues={formValues} setFormValues={setFormValues} customerData={customerData} />;
-      case "content":
-        return <ContentForm step={step} setStep={setStep} setFormValues={setFormValues} />;
-      case "roro":
+      case "description":
         return (
           <ContainerType
             setFormValues={setFormValues}
             formValues={formValues}
-            checkBox={checkBox}
-            setCheckBox={setCheckBox}
+            radioArray={radioArray}
+            setRadioArray={setRadioArray}
             optionData={optionData}
             setOptionData={setOptionData}
-          />
-        );
+            setDisplayContent={setDisplayContent}
+            setDisplayCars={setDisplayCars}
+          />);  
       case "personal_effect":
         return (
           <Form style={{ marginTop: 10 }}>

@@ -1,19 +1,21 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { Checkbox, Dropdown, Button, Icon, Input } from "semantic-ui-react";
-import { IContainerForm } from "../../Types/containerTypes";
+import { Checkbox, Dropdown, Button, Icon, Input, Radio } from "semantic-ui-react";
+import { IContainerForm, IRadioBoxArray } from "../../Types/containerTypes";
 import { fetchAutoCompleteAPI, createAutoComplete_API } from "../../actions/poa_nra";
 import { IAutoComplete } from "../../Types/poaNraTypes";
 
 type IProps = {
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
-  checkBox: any;
-  setCheckBox: Dispatch<SetStateAction<any>>;
+  radioArray: IRadioBoxArray[];
+  setRadioArray: Dispatch<SetStateAction<IRadioBoxArray[]>>;
   optionData: IAutoComplete[];
   formValues: IContainerForm;
   setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
+  setDisplayCars: Dispatch<SetStateAction<boolean>>;
+  setDisplayContent: Dispatch<SetStateAction<boolean>>;
 };
 
-const ContainerType = ({ setFormValues, formValues, checkBox, setCheckBox, optionData, setOptionData }: IProps) => {
+const ContainerType = ({ setFormValues, formValues, radioArray, setDisplayCars,setDisplayContent, setRadioArray, optionData, setOptionData }: IProps) => {
   useEffect(() => {
     fetchAutoCompleteAPI().then((data) => {
       setOptionData(data);
@@ -198,9 +200,72 @@ const ContainerType = ({ setFormValues, formValues, checkBox, setCheckBox, optio
     );
   };
 
+
+  const renderRadioButton = () => {
+
+    
+    // if (radioArray) {
+    //   return radioArray.map((data, index) => (
+    //     <Radio
+    //       label={data.label}
+    //       name={`radioGroup${data.label}`}
+    //       value={data.label}
+    //       checked={data.isChecked}
+    //       onChange={(e, { value }) => {
+    //         const copyRadioArray = [...radioArray];
+    //         const copyInputFunction = [...inputFunction];
+    //         for (let i = 0; i < radioArray.length; i++) {
+    //           copyRadioArray[i].isChecked = false;
+    //         }
+    //         copyRadioArray[index].isChecked = true;
+    //         copyInputFunction[mainIndex].radioArray = copyRadioArray;
+    //         const val = value as string;
+    //         copyInputFunction[mainIndex].value = val;
+    //         setInputFunction(copyInputFunction);
+    //       }}
+    //       style={{ marginBottom: 10, marginLeft: 10, marginTop: 10 }}
+    //       key={index}
+    //     />
+    //   ));
+    // }
+  };
+
   return (
     <div style={{ textAlign: "center", marginTop: 20 }}>
-      <Checkbox
+      {
+        radioArray.map((data:IRadioBoxArray, index:number)=>(
+          <Radio
+          label={data.label}
+          style={{ marginRight: 20 }}
+          name={data.value}
+          checked={data.isChecked}
+          onChange={(e, data) => {
+            const copyRadioArray = [...radioArray ];
+            for (let i = 0; i < radioArray.length; i++) {
+              copyRadioArray[i].isChecked = false;
+            }
+            copyRadioArray[index].isChecked = data.checked ? true : false;
+           // checkCopyArray.isChecked = data.checked ? true : false;
+            setFormValues((prev: any) => {
+              return {
+                ...prev,
+                ["container_type"]: data.value,
+              };
+            });
+            setRadioArray(copyRadioArray);
+            if(data.value === "roro")
+             {  setDisplayCars(true)
+            }
+            else{
+              setDisplayContent(true)
+            }
+          }}
+          value={data.value}
+          />
+       
+        ))
+      }
+      {/* <Radio
         label={checkBox.label}
         style={{ marginRight: 20 }}
         name={checkBox.value}
@@ -217,9 +282,9 @@ const ContainerType = ({ setFormValues, formValues, checkBox, setCheckBox, optio
           setCheckBox(checkCopyArray);
         }}
         value={checkBox.value}
-      />
+      /> */}
 
-      {checkBox.isChecked && (
+      {/* {checkBox.isChecked && (
         <div style={{ height: 400, marginTop: 20 }}>
           <div style={{ display: "flex" }}>
             {renderInput1()}
@@ -227,7 +292,7 @@ const ContainerType = ({ setFormValues, formValues, checkBox, setCheckBox, optio
             {renderInput3()}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

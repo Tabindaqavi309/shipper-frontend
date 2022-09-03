@@ -18,7 +18,7 @@ type IProps = {
   modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
   customerName: string;
   customerId: number;
-  containerId:number;
+  containerId: number;
   setContainerId: Dispatch<SetStateAction<number>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
   setDisplayBookingConfirmation: Dispatch<SetStateAction<boolean>>;
@@ -78,7 +78,7 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
-const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
+const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId, containerId, setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
@@ -117,7 +117,7 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
         setStep(array);
       } else {
         setIsLoading(true);
-       await handleSaveCarAPI(carData);
+        await handleSaveCarAPI(carData);
         setIsLoading(false);
         setPageIsLoading((prev) => {
           return !prev;
@@ -125,27 +125,27 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
         setCarData([]);
         setCarFormValues(carFormValuesObj);
         setFormValues(containerFormObj);
-        array[0].active =true;
-        array[0].disabled =false;
+        array[0].active = true;
+        array[0].disabled = false;
         setTabIndex(0);
-      setSection(array[0].value);
-       setStep(array);
-       if(action === "saveAndClose"){
-        setPageIsLoading(true);
-       modalAction("", false, false);
-     }
-     else if(action === "saveAndFill"){
-      setDisplayBookingConfirmation(true)
-      }
+        setSection(array[0].value);
+        setStep(array);
+        if (action === "saveAndClose") {
+          setPageIsLoading(true);
+          modalAction("", false, false);
+        }
+        else if (action === "saveAndFill") {
+          setDisplayBookingConfirmation(true)
+        }
       }
 
       if (array[tabIndex].value === "personal_effect") {
         if (arrayLength >= 4) {
-            setIsLoading(true);
-            const data: any = await handleSaveContainerAPI(formValues);
-            setIsLoading(false);
-            setContainerId(data.id)
-  
+          setIsLoading(true);
+          const data: any = await handleSaveContainerAPI(formValues);
+          setIsLoading(false);
+          setContainerId(data.id)
+
         }
       }
     } catch (err) {
@@ -157,17 +157,17 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
     const array = [...step];
     const arrayLength = array.filter((result) => result.display).length;
     if (tabIndex < arrayLength - 1) {
-      return (  <Button content="Next" primary icon="right arrow" labelPosition="right" onClick={()=>handleNext("saveAndNext")} />)
+      return (<Button content="Next" primary icon="right arrow" labelPosition="right" onClick={() => handleNext("saveAndNext")} />)
     } else {
       return (
-        <div> 
-        <Button color="grey" style={{ marginRight: 10 }} onClick={()=>handleNext("saveAndFill")}>
-             Save and fill booking confirmation
-           </Button>
-           <Button positive onClick={()=>handleNext("saveAndClose")}>
-             Save and close
-           </Button>
-        </div>   
+        <div>
+          <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleNext("saveAndFill")}>
+            Save and fill booking confirmation
+          </Button>
+          <Button positive onClick={() => handleNext("saveAndClose")}>
+            Save and close
+          </Button>
+        </div>
       );
     }
   };
@@ -241,32 +241,32 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
 
   return (
     <div style={{ width: 1000, padding: 20 }}>
-    <div>
+      <div>
         <div>
-            <a style={{fontSize:15}} href={"http://cube.hoegh.com"} target="_blank">cube.hoegh.com, </a>
-            <a style={{fontSize:15}} href={"http://www.carfax.com"} target="_blank">CarFax, </a>
-            <a style={{fontSize:15}} href={"https://www.net.grimaldi.co.uk/GNET45/"} target="_blank">grimaldi.co.uk, </a>
-            <a style={{fontSize:15}} href={"https://www.msc.com/en/g"} target="_blank">msc, </a>
-            <a style={{fontSize:15}} href={"https://www.maersk.com/tracking/#tracking"}  target="_blank">Maersk</a>
-           </div>
-  <Modal.Content scrolling>
-        <ModalStep step={step} />
-        {renderSection()}
-      </Modal.Content>
-      <Modal.Actions>
-        {isLoading ? (
-          <CircularProgressComponent />
-        ) : (
-          <div>
+          <a style={{ fontSize: 15 }} href={"http://cube.hoegh.com"} target="_blank">cube.hoegh.com, </a>
+          <a style={{ fontSize: 15 }} href={"http://www.carfax.com"} target="_blank">CarFax, </a>
+          <a style={{ fontSize: 15 }} href={"https://www.net.grimaldi.co.uk/GNET45/"} target="_blank">grimaldi.co.uk, </a>
+          <a style={{ fontSize: 15 }} href={"https://www.msc.com/en/g"} target="_blank">msc, </a>
+          <a style={{ fontSize: 15 }} href={"https://www.maersk.com/tracking/#tracking"} target="_blank">Maersk</a>
+        </div>
+        <Modal.Content scrolling>
+          <ModalStep step={step} />
+          {renderSection()}
+        </Modal.Content>
+        <Modal.Actions>
+          {isLoading ? (
+            <CircularProgressComponent />
+          ) : (
+            <div>
               <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
-            {tabIndex !== 0 && <Button content="Previous" secondary icon="left arrow" labelPosition="left" onClick={handlePrevious} />}
-            {renderNextButton()}
+                {tabIndex !== 0 && <Button content="Previous" secondary icon="left arrow" labelPosition="left" onClick={handlePrevious} />}
+                {renderNextButton()}
+              </div>
+
             </div>
-          
-          </div>
-        )}
-      </Modal.Actions>
-    </div>
+          )}
+        </Modal.Actions>
+      </div>
     </div>
   );
 };
