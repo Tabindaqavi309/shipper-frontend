@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import SearchSection from "../../components/POANRA/SearchSection";
 import { IPOANRA_Response, poa_nra_form_values, IPOANRA_FORM, IAutoComplete } from "../../Types/poaNraTypes";
 import FormModal from "../../components/POANRA/FormModal";
+import { useDispatch, useSelector } from "react-redux";
+import { handleModal } from "../../store/actions/modal";
 import { IClientResponse } from "../../Types/clientTypes";
 import { fetchCustomers } from "../../actions/customer";
-import DataTable from "../../components/POANRA/DataTable";
+import  DataTable from "../../components/POANRA/DataTable";
+import  ContainerForm from "../../components/POANRA/ContainerForm";
 import { fetchPONRA, fetchAutoCompleteAPI } from "../../actions/poa_nra";
+import { IContainerForm ,containerFormObj} from "../../Types/containerTypes";
 
 function reducer(state: any, action: { type: string; size?: string | undefined }) {
   switch (action.type) {
@@ -30,6 +34,15 @@ const POANRA = () => {
   const [formValues, setFormValues] = useState<IPOANRA_FORM>(formData);
   const { open, size } = state;
   const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
+  const [containerId, setContainerId] = useState<number>(0);
+  const [displayContainerForm, setDisplayContainerForm] = useState<boolean>(false);
+  const [displayBookingConfirmation, setDisplayBookingConfirmation] = useState<boolean>(false);
+  const [displayDockReceiptForm, setDisplayDockReceiptForm] = useState<boolean>(false);
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerId, setCustomerId] = useState<number>(0);
+  const [displayInvoiceForm, setDisplayInvoiceForm] = useState<boolean>(false);
+
+  const [containerFormValues, setContainerFormValues] = useState<IContainerForm>(containerFormObj);
 
   const [customerData, setCustomerData] = useState<IClientResponse[]>([]);
 
@@ -93,8 +106,8 @@ const POANRA = () => {
           setIndexToEdit={setIndexToEdit}
         />
       </div>
-      {open && (
-        <FormModal
+      {open &&  !displayContainerForm?(
+       <FormModal
           open={open}
           size={size}
           rows={rows}
@@ -103,13 +116,28 @@ const POANRA = () => {
           setFormValues={setFormValues}
           setPageIsLoading={setPageIsLoading}
           customerData={customerData}
+          setCustomerId = {setCustomerId}
+          setCustomerName = {setCustomerName}
           setCustomerData={setCustomerData}
           optionData={optionData}
           setOptionData={setOptionData}
+          setDisplayContainerForm={setDisplayContainerForm}
           formAction={formAction}
           indexToEdit={indexToEdit}
         />
-      )}
+      ): <ContainerForm 
+      open={open}
+      size={size}
+        closeModal={closeModal}
+      formValues={containerFormValues}
+      setFormValues={setContainerFormValues}
+      customerName={customerName}
+      customerId={customerId}
+      containerId ={containerId}
+      setContainerId ={setContainerId}
+      setDisplayBookingConfirmation={setDisplayBookingConfirmation}
+      setPageIsLoading={setPageIsLoading}
+     />}
     </div>
   );
 };

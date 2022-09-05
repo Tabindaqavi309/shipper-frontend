@@ -11,20 +11,22 @@ type IProps = {
   customerData: IClientResponse[];
   setConsigneeIsVisible: Dispatch<SetStateAction<boolean>>;
   setConsigneeData: Dispatch<SetStateAction<IConsigneeSearch[]>>;
+  setCustomerName: Dispatch<SetStateAction<string>>;
 };
 
-const CustomerForm = ({ formValues, setFormValues, customerData, setConsigneeIsVisible, setConsigneeData }: IProps) => {
+const CustomerForm = ({ formValues, setFormValues, customerData,setCustomerName, setConsigneeIsVisible, setConsigneeData }: IProps) => {
   const [searchData, setSearchData] = useState<IClientResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const responseData = customerData as any;
+  //const responseData = customerData as any;
 
-  const customerOptions = (customerData: IClientResponse[]) =>
-    responseData.map((value: any, index: number) => ({
+  const customerOptions = (customerData: IClientResponse[]) =>{
+    return  customerData.map((value: any, index: number) => ({
       key: index,
       text: value.full_name,
       value: value.id,
-    }));
+    }) )}
+    ;
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -36,7 +38,8 @@ const CustomerForm = ({ formValues, setFormValues, customerData, setConsigneeIsV
           placeholder="Search by customer name"
           search={(data, inputValues) => {
             customerDropDownFullTextSearchAPI(inputValues).then((result: any) => {
-              setSearchData(result);
+              setSearchData(result.data);
+               
             });
             return customerOptions(searchData);
           }}
@@ -47,6 +50,8 @@ const CustomerForm = ({ formValues, setFormValues, customerData, setConsigneeIsV
           style={{ width: "100%" }}
           onChange={async (e, { value, name }) => {
             try {
+              setCustomerName(e.target.textContent)
+             // console.log(e.target.textContent)
               setConsigneeIsVisible(true);
               setFormValues((prev: any) => {
                 return {
