@@ -25,20 +25,20 @@ import CarsComponent from "./DockReceiptDetails/CarsComponent";
 
 
 type IProps = {
+  size?: any;
+  open: boolean;
+  closeModal: () => void;
    formValues: IDockReceipt_FORM;
-   modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
    setFormValues: Dispatch<SetStateAction<IDockReceipt_FORM>>;
    setPageIsLoading: Dispatch<SetStateAction<boolean>>;
    customerName: string;
    customerId: number;
    consigneeId: number;
    consigneeName: string;
-   setDisplayConsigneeForm:Dispatch<SetStateAction<boolean>>;
    setDisplayInvoiceForm:Dispatch<SetStateAction<boolean>>;
-   setDisplayDockReceiptForm:Dispatch<SetStateAction<boolean>>;
+   setDisplayContainerForm:Dispatch<SetStateAction<boolean>>
    setDisplayBookingConfirmation:Dispatch<SetStateAction<boolean>>;
-   setDisplayContainerForm:Dispatch<SetStateAction<boolean>>;
-   setDisplayPoaNraForm:Dispatch<SetStateAction<boolean>>;
+   setDisplayDockReceiptForm:Dispatch<SetStateAction<boolean>>;
 };
 
 type INewObj = {
@@ -46,16 +46,16 @@ type INewObj = {
 };
 
 const DockReceiptForm = ({
+  size,
+  open,
+  closeModal,
   customerName,
   customerId,
-  setDisplayConsigneeForm,
-  setDisplayPoaNraForm,
   setDisplayContainerForm,
+  setDisplayInvoiceForm,
   setDisplayBookingConfirmation,
   setDisplayDockReceiptForm,
-  setDisplayInvoiceForm,
   setPageIsLoading,
-  modalAction,
   setFormValues,
   formValues
 }: IProps) => {
@@ -151,8 +151,8 @@ const DockReceiptForm = ({
 
   const renderButtons = () => (
     <div style={{ display: "flex", justifyContent: "flex-end", paddingTop:"20px"}}>
-       <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSubmit("saveANDfill")}>
-            Save and fill Invoice form
+        <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSubmit("saveANDfill")}>
+            Save and fill invoice form
           </Button>
           <Button positive onClick={() => handleSubmit("saveANDclose")}>
             Save and close
@@ -300,18 +300,15 @@ const DockReceiptForm = ({
       
         if(action === "saveANDclose"){
           setPageIsLoading(true);
-          modalAction("", false, false);
-            setDisplayConsigneeForm(false)
-            setDisplayPoaNraForm(false)
+          closeModal()
           setDisplayContainerForm(false)
           setDisplayBookingConfirmation(false)
           setDisplayDockReceiptForm(false)
           await createInvoice_API({ id: 0,customer_id: obj.customer_id,dock_receipt_id:obj.id, date_added: new Date()});
         }
         else{
-        //  setConsigneeId(data.id)
           setDisplayInvoiceForm(true)
-        }
+        }     
       // setIsSaving(false);
       // setPageIsLoading(false);
     } catch (e) {
@@ -353,8 +350,17 @@ const DockReceiptForm = ({
 //         </Button>
 //       </Modal.Actions>
 //     </Modal> */}
-<div style={{  width: 1000, padding: 20, height: 600}} > 
+<Modal size={size} open={open} onClose={closeModal} style={{padding:"10px"} }>
+<Modal.Header>
+    <div style={{ display: "flex", justifyContent: "space-between" } }>
+      <div>
+        <p>New Container</p>
+       </div>
+     </div>
+ </Modal.Header>
+ <Modal.Content scrolling>
 <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+</Modal.Content>
 {isSaving ? (
         <div style={{ marginTop: 30, float: "right", padding: 30 }}>
           <CircularProgress />
@@ -362,7 +368,7 @@ const DockReceiptForm = ({
       ) : (
         renderButtons()
       )}
-</div>
+</Modal>
   );
 };
 

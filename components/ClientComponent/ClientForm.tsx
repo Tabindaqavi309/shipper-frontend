@@ -205,6 +205,7 @@ const ClientForm = ({
       dispatch(handleSnackBar(snackObj));
 
       if (action === "saveANDclose") {
+        setDisplayConsigneeForm(false)
         handleSaveAction(data);
         setPageIsLoading(true);
         modalAction("", false, false);

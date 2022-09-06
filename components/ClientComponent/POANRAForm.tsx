@@ -30,6 +30,8 @@ type IProps = {
   customerId: number;
   consigneeId: number
   consigneeName: string;
+  setDisplayPoaNraForm: Dispatch<SetStateAction<boolean>>;
+  setDisplayConsigneeForm: Dispatch<SetStateAction<boolean>>;
   setDisplayContainerForm: Dispatch<SetStateAction<boolean>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const POANRAForm = ({formValues, setFormValues, modalAction,customerName, customerId, consigneeId, consigneeName, setDisplayContainerForm,setPageIsLoading}: IProps) => {
+const POANRAForm = ({formValues, setFormValues, modalAction,customerName, customerId, consigneeId, consigneeName,setDisplayPoaNraForm,setDisplayConsigneeForm, setDisplayContainerForm,setPageIsLoading}: IProps) => {
    const classes = useStyles();
    const [isSaving, setIsSaving] = useState<boolean>(false);
    const [optionData, setOptionData] = useState<IAutoComplete[]>([]);
@@ -85,8 +87,11 @@ const POANRAForm = ({formValues, setFormValues, modalAction,customerName, custom
       await createPONRA_API(data);
 
      if(action === "saveANDclose"){
-      setPageIsLoading(true);
       modalAction("", false, false);
+      setDisplayConsigneeForm(false)
+      setDisplayPoaNraForm(false)
+      setPageIsLoading(true);
+
     }
     else{
       setDisplayContainerForm(true) 

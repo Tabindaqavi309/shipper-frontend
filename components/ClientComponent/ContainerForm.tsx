@@ -21,6 +21,9 @@ type IProps = {
   containerId:number;
   setContainerId: Dispatch<SetStateAction<number>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
+  setDisplayConsigneeForm:Dispatch<SetStateAction<boolean>>;
+  setDisplayContainerForm:Dispatch<SetStateAction<boolean>>;
+  setDisplayPoaNraForm:Dispatch<SetStateAction<boolean>>;
   setDisplayBookingConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -78,7 +81,11 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
-const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
+const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,
+  setDisplayConsigneeForm,
+  setDisplayPoaNraForm,
+  setDisplayContainerForm,
+  setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
@@ -133,6 +140,9 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
        if(action === "saveAndClose"){
         setPageIsLoading(true);
        modalAction("", false, false);
+       setDisplayConsigneeForm(false)
+        setDisplayPoaNraForm(false)
+      setDisplayContainerForm(false)
      }
      else if(action === "saveAndFill"){
       setDisplayBookingConfirmation(true)

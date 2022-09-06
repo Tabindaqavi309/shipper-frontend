@@ -32,7 +32,9 @@ type IProps = {
   customerData: IClientResponse[];
   setCustomerData: Dispatch<SetStateAction<IClientResponse[]>>;
   setCustomerName: Dispatch<SetStateAction<string>>;
-  setCustomerId: Dispatch<SetStateAction<number|undefined>>;
+  setConsigneeName: Dispatch<SetStateAction<string>>;
+  setCustomerId: Dispatch<SetStateAction<number>>;
+  setConsigneeId: Dispatch<SetStateAction<number>>;
   setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
   optionData: IAutoComplete[];
   formAction: string;
@@ -49,8 +51,9 @@ const FormModal = ({
   open,
   closeModal,
   setPageIsLoading,
-  setCustomerData,
+  setConsigneeName,
   setCustomerId,
+  setConsigneeId,
   setCustomerName,
   setFormValues,
   setDisplayContainerForm,
@@ -104,7 +107,7 @@ const FormModal = ({
   }, []);
 
   const renderConsigneeView = () => {
-    const view = <ConsigneeForm formValues={formValues} setFormValues={setFormValues} consigneeData={consigneeData} />;
+    const view = <ConsigneeForm formValues={formValues} setFormValues={setFormValues} setConsigneeName={setConsigneeName} consigneeData={consigneeData} />;
     if (formAction === "edit") {
       return view;
     }
@@ -203,7 +206,8 @@ const FormModal = ({
           closeModal();
         }
         else if(action==="saveANDfill"){
-          setCustomerId(data.customer_id)
+          setCustomerId(data.customer_id??0)
+          setConsigneeId(data.consignee_id??0)
           setDisplayContainerForm(true) 
         }
       }

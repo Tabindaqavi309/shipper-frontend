@@ -15,19 +15,18 @@ const line = <div style={{ height: 2, border: "1px solid #E0E0E0", marginBottom:
 // setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
 // optionData: IAutoComplete[];
 type IProps = {
+  size?: any;
+  open: boolean;
+  closeModal: () => void;
   formValues: IBookingReceipt_FORM;
   setFormValues: Dispatch<SetStateAction<IBookingReceipt_FORM>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
-  // customerData: IClientResponse[];
-  modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
   customerName: string;
   customerId: number;
   consigneeId: number
   consigneeName: string;
-  setDisplayConsigneeForm:Dispatch<SetStateAction<boolean>>;
   setDisplayBookingConfirmation:Dispatch<SetStateAction<boolean>>;
   setDisplayContainerForm:Dispatch<SetStateAction<boolean>>;
-  setDisplayPoaNraForm:Dispatch<SetStateAction<boolean>>;
   setDisplayDockReceiptForm: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -36,15 +35,15 @@ type INewObj = {
 };
 
 const BookingConfirmationForm = ({
+  size,
+  open,
+  closeModal,
   customerName,
   customerId,
   consigneeId,
   consigneeName,
   setPageIsLoading,
-  modalAction,
   setFormValues,
-  setDisplayConsigneeForm,
-  setDisplayPoaNraForm,
   setDisplayContainerForm,
   setDisplayBookingConfirmation,
   setDisplayDockReceiptForm,
@@ -147,11 +146,10 @@ const BookingConfirmationForm = ({
 
       if(action === "saveANDclose"){
         setPageIsLoading(true);
-        modalAction("", false, false);
-        setDisplayConsigneeForm(false)
-        setDisplayPoaNraForm(false)
-        setDisplayContainerForm(false)
+        closeModal()
         setDisplayBookingConfirmation(false)
+        setDisplayContainerForm(false)
+      // modalAction("", false, false);
       }
       else{
         setDisplayDockReceiptForm(true) 
@@ -174,9 +172,23 @@ const BookingConfirmationForm = ({
   };
 
   return (
-     <div style={{  width: 1000, padding: 20, height: 600}} > 
-  
+    <Modal size={size} open={open} onClose={closeModal} style={{padding:"10px"} }>
+    <div>
+    <Modal.Header>
+        <div style={{ display: "flex", justifyContent: "space-between" } }>
+          <div>
+            <p>New Container</p>
+           </div>
+         </div>
+     </Modal.Header>
+     <Modal.Content scrolling>
+        {error && (
+          <div>
+            <p style={{ color: "red" }}>Customer Name and Consignee is required</p>
+          </div>
+        )}           
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+        </Modal.Content>
         {line}
   {isSaving ? (
         <div style={{ marginTop: 100, float: "right", padding: 30 }}>
@@ -185,7 +197,10 @@ const BookingConfirmationForm = ({
       ) : (
         renderButtons()
       )}
-  </div>);
+  </div>
+  </Modal>
+  );
+
 };
 
 export default BookingConfirmationForm;
