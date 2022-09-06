@@ -31,7 +31,7 @@ const ConsigneeForm = ({ formValues, setFormValues, consigneeData,setConsigneeNa
           style={{ width: "100%" }}
           onChange={(e, { value, name }) => {
             console.log(e.currentTarget.textContent)
-            setConsigneeName(e.currentTarget.textContent)
+            setConsigneeName(e.currentTarget.textContent??"")
             setFormValues((prev: any) => {
               return {
                 ...prev,
