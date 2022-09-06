@@ -3,13 +3,12 @@ import { Dropdown } from "semantic-ui-react";
 import { IPOANRA_FORM, IConsigneeSearch } from "../../../Types/poaNraTypes";
 
 type IProps = {
-  formValues: IPOANRA_FORM;
-  setFormValues: Dispatch<SetStateAction<IPOANRA_FORM>>;
-  setConsigneeName: Dispatch<SetStateAction<string>>;
+  formValues: any;
+  setFormValues: Dispatch<SetStateAction<any>>;
   consigneeData: IConsigneeSearch[];
 };
 
-const ConsigneeForm = ({ formValues, setFormValues, consigneeData,setConsigneeName }: IProps) => {
+const ConsigneeForm = ({ formValues, setFormValues, consigneeData }: IProps) => {
   const options = (consigneeData: IConsigneeSearch[]) =>
     consigneeData.map((value, index: number) => ({
       key: index,
@@ -30,8 +29,6 @@ const ConsigneeForm = ({ formValues, setFormValues, consigneeData,setConsigneeNa
           options={options(consigneeData)}
           style={{ width: "100%" }}
           onChange={(e, { value, name }) => {
-            console.log(e.currentTarget.textContent)
-            setConsigneeName(e.currentTarget.textContent)
             setFormValues((prev: any) => {
               return {
                 ...prev,

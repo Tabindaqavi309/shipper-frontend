@@ -13,17 +13,17 @@ import ContainerType from "./ContainerDetails/ContainerType";
 import { IAutoComplete } from "../../Types/poaNraTypes";
 
 type IProps = {
+  size?: any;
+  open: boolean;
+  closeModal: () => void;
   formValues: IContainerForm;
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
-  modalAction: (tittle: string, display: boolean, isDelete: boolean) => void;
   customerName: string;
   customerId: number;
   containerId:number;
   setContainerId: Dispatch<SetStateAction<number>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
-  setDisplayConsigneeForm:Dispatch<SetStateAction<boolean>>;
-  setDisplayContainerForm:Dispatch<SetStateAction<boolean>>;
-  setDisplayPoaNraForm:Dispatch<SetStateAction<boolean>>;
+  setDisplayContainerForm: Dispatch<SetStateAction<boolean>>;
   setDisplayBookingConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -81,11 +81,8 @@ const checkBoxArray: ICheckBox = {
   label: "Is this a Roro?",
   isChecked: false,
 };
-const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, customerId,containerId,
-  setDisplayConsigneeForm,
-  setDisplayPoaNraForm,
-  setDisplayContainerForm,
-  setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
+const ContainerForm = ({ formValues, setFormValues, closeModal,size, open, customerName, customerId,containerId,
+  setDisplayContainerForm, setDisplayBookingConfirmation, setContainerId, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
@@ -139,10 +136,8 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
        setStep(array);
        if(action === "saveAndClose"){
         setPageIsLoading(true);
-       modalAction("", false, false);
-       setDisplayConsigneeForm(false)
-        setDisplayPoaNraForm(false)
-      setDisplayContainerForm(false)
+          closeModal()
+          setDisplayContainerForm(false)
      }
      else if(action === "saveAndFill"){
       setDisplayBookingConfirmation(true)
@@ -250,16 +245,25 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
   };
 
   return (
-    <div style={{ width: 1000, padding: 20 }}>
+    <Modal size={size} open={open} onClose={closeModal} style={{padding:"10px"} }>
     <div>
-        <div>
+    <Modal.Header>
+        <div style={{ display: "flex", justifyContent: "space-between" } }>
+          <div>
+            <p>New Container</p>
             <a style={{fontSize:15}} href={"http://cube.hoegh.com"} target="_blank">cube.hoegh.com, </a>
             <a style={{fontSize:15}} href={"http://www.carfax.com"} target="_blank">CarFax, </a>
             <a style={{fontSize:15}} href={"https://www.net.grimaldi.co.uk/GNET45/"} target="_blank">grimaldi.co.uk, </a>
             <a style={{fontSize:15}} href={"https://www.msc.com/en/g"} target="_blank">msc, </a>
             <a style={{fontSize:15}} href={"https://www.maersk.com/tracking/#tracking"}  target="_blank">Maersk</a>
            </div>
-  <Modal.Content scrolling>
+          <div>
+            <Icon name="close" style={{ cursor: "pointer" }} onClick={closeModal} />
+          </div>
+        </div>
+      </Modal.Header>
+      <br/>
+      <Modal.Content scrolling>
         <ModalStep step={step} />
         {renderSection()}
       </Modal.Content>
@@ -276,8 +280,9 @@ const ContainerForm = ({ formValues, setFormValues, modalAction, customerName, c
           </div>
         )}
       </Modal.Actions>
+    
     </div>
-    </div>
+    </Modal>
   );
 };
 

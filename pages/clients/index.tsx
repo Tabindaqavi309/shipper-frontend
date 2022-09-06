@@ -142,6 +142,7 @@ const Client = () => {
         customerName={customerName}
         customerId={customerId}
         setConsigneeId = {setConsigneeId}
+        setDisplayConsigneeForm={setDisplayConsigneeForm}
         setDisplayPoaNraForm={setDisplayPoaNraForm}
         setPageIsLoading={setPageIsLoading}
       />
@@ -154,6 +155,8 @@ const Client = () => {
       customerId={customerId}
       consigneeId={consigneeId}
       consigneeName={formValues_consignee.full_name}
+      setDisplayConsigneeForm={setDisplayConsigneeForm}
+      setDisplayPoaNraForm={setDisplayPoaNraForm}
       setDisplayContainerForm={setDisplayContainerForm}
       setPageIsLoading={setPageIsLoading}
     />):  !displayBookingConfirmation ?  ( 
@@ -165,6 +168,9 @@ const Client = () => {
       customerId={customerId}
       containerId ={containerId}
       setContainerId ={setContainerId}
+      setDisplayConsigneeForm={setDisplayConsigneeForm}
+      setDisplayPoaNraForm={setDisplayPoaNraForm}
+      setDisplayContainerForm={setDisplayContainerForm}
       setDisplayBookingConfirmation={setDisplayBookingConfirmation}
       setPageIsLoading={setPageIsLoading}
      />) : !displayDockReceiptForm ?
@@ -176,6 +182,10 @@ const Client = () => {
       customerId={customerId}
       consigneeId={consigneeId}
       consigneeName={formValues_consignee.full_name}
+      setDisplayConsigneeForm={setDisplayConsigneeForm}
+      setDisplayPoaNraForm={setDisplayPoaNraForm}
+      setDisplayContainerForm={setDisplayContainerForm}
+      setDisplayBookingConfirmation={setDisplayBookingConfirmation}
       setDisplayDockReceiptForm={setDisplayDockReceiptForm}
       setPageIsLoading={setPageIsLoading}
      />) : !displayInvoiceForm ?
@@ -187,6 +197,11 @@ const Client = () => {
       customerId={customerId}
       consigneeId={consigneeId}
       consigneeName={formValues_consignee.full_name}
+      setDisplayConsigneeForm={setDisplayConsigneeForm}
+      setDisplayPoaNraForm={setDisplayPoaNraForm}
+      setDisplayContainerForm={setDisplayContainerForm}
+      setDisplayBookingConfirmation={setDisplayBookingConfirmation}
+      setDisplayDockReceiptForm={setDisplayDockReceiptForm}
       setDisplayInvoiceForm={setDisplayInvoiceForm}
       setPageIsLoading={setPageIsLoading}
      />) : (

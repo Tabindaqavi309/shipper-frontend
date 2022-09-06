@@ -20,6 +20,7 @@ type IProps = {
   customerId: number;
   setConsigneeId:  Dispatch<SetStateAction<number>>;
   setDisplayPoaNraForm: Dispatch<SetStateAction<boolean>>;
+  setDisplayConsigneeForm: Dispatch<SetStateAction<boolean>>;
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setConsigneeId, setDisplayPoaNraForm, setPageIsLoading }: IProps): JSX.Element => {
+const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, customerId, setConsigneeId,setDisplayPoaNraForm, setDisplayConsigneeForm, setPageIsLoading }: IProps): JSX.Element => {
   const classes = useStyles();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [other, setOther] = useState<boolean>(false);
@@ -74,6 +75,7 @@ const ConsigneeForm = ({ formValues, setFormValues, modalAction, customerName, c
       const data: any =  await handleSaveAPI(newValues);
 
      if(action === "saveANDclose"){
+      setDisplayConsigneeForm(false)
       setPageIsLoading(true);
       modalAction("", false, false);
     }

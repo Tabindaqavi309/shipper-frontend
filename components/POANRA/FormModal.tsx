@@ -31,10 +31,15 @@ type IProps = {
   setPageIsLoading: Dispatch<SetStateAction<boolean>>;
   customerData: IClientResponse[];
   setCustomerData: Dispatch<SetStateAction<IClientResponse[]>>;
+  setCustomerName: Dispatch<SetStateAction<string>>;
+  setConsigneeName: Dispatch<SetStateAction<string>>;
+  setCustomerId: Dispatch<SetStateAction<number>>;
+  setConsigneeId: Dispatch<SetStateAction<number>>;
   setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
   optionData: IAutoComplete[];
   formAction: string;
   indexToEdit: number;
+  setDisplayContainerForm: Dispatch<SetStateAction<boolean>>;
 };
 
 type INewObj = {
@@ -46,8 +51,12 @@ const FormModal = ({
   open,
   closeModal,
   setPageIsLoading,
-  setCustomerData,
+  setConsigneeName,
+  setCustomerId,
+  setConsigneeId,
+  setCustomerName,
   setFormValues,
+  setDisplayContainerForm,
   customerData,
   formValues,
   setOptionData,
@@ -98,7 +107,7 @@ const FormModal = ({
   }, []);
 
   const renderConsigneeView = () => {
-    const view = <ConsigneeForm formValues={formValues} setFormValues={setFormValues} consigneeData={consigneeData} />;
+    const view = <ConsigneeForm formValues={formValues} setFormValues={setFormValues} setConsigneeName={setConsigneeName} consigneeData={consigneeData} />;
     if (formAction === "edit") {
       return view;
     }
@@ -113,6 +122,7 @@ const FormModal = ({
         <Tab.Pane attached={false}>
           <div style={{ height: 660 }}>
             <CustomerForm
+            setCustomerName={setCustomerName}
               formValues={formValues}
               setFormValues={setFormValues}
               customerData={customerData}
@@ -142,7 +152,30 @@ const FormModal = ({
     },
   ];
 
-  const handleSubmit = async () => {
+  const renderButtons = () => {
+    if (formAction === "new") {
+      return (
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
+          <Button color="grey" style={{ marginRight: 10 }} onClick={() => handleSubmit("saveANDfill")}>
+            Save and fill container form
+          </Button>
+          <Button positive onClick={() => handleSubmit("saveANDclose")}>
+            Save and close
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 30 }}>
+          <Button primary onClick={()=>handleSubmit("edit")}>
+            Update
+          </Button>
+        </div>
+      );
+    }
+  };
+
+  const handleSubmit = async (action:string) => {
     try {
       const newObj: INewObj = {};
       for (let i = 0; i < inputFunction.length; i++) {
@@ -166,10 +199,19 @@ const FormModal = ({
         await handleUpdatePOA_NRA_API(data, id);
       } else {
         await createPONRA_API(data);
+        if(action === "saveANDclose"){
+          console.log("here")
+          setIsSaving(false);
+          setPageIsLoading(false);
+          closeModal();
+        }
+        else if(action==="saveANDfill"){
+          setCustomerId(data.customer_id??0)
+          setConsigneeId(data.consignee_id??0)
+          setDisplayContainerForm(true) 
+        }
       }
-      setIsSaving(false);
-      setPageIsLoading(false);
-      closeModal();
+     
     } catch (e) {
       if(e instanceof Error){
       setErrorMessage(e.message);
@@ -204,9 +246,7 @@ const FormModal = ({
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
       </Modal.Content>
       <Modal.Actions>
-        <Button primary onClick={handleSubmit} loading={isSaving}>
-          {formAction === "edit" ? "Update" : "Submit"}
-        </Button>
+      { renderButtons()} 
       </Modal.Actions>
     </Modal>
   );
