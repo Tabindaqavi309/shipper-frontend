@@ -99,7 +99,11 @@ export default function HeaderComponent(this: any) {
     } else if (name === "Invoice") {
       setActiveItem("invoice");
       handleRouteChange("invoice");
-    } else {
+    } else if (name === "Change Password") {
+      setActiveItem("changepassword");
+      handleRouteChange("changepassword");
+    }     
+    else {
       setActiveItem(name);
       handleRouteChange(name);
     }
@@ -131,6 +135,11 @@ export default function HeaderComponent(this: any) {
           <Dropdown.Item onClick={() => { onDownload(10) }}>OTI Legal Disclaimer of Cargo Ownership</Dropdown.Item>
           <Dropdown.Item onClick={() => { onDownload(11) }}>OLDSAILORS  POWER OF ATTORNEY</Dropdown.Item>
           <Dropdown.Item onClick={() => { onDownload(12) }}>SAMPLE DOC RECEITE</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      <Dropdown item text="Profile">
+        <Dropdown.Menu >
+          <Dropdown.Item><Menu.Item name="Change Password" active={activeItem === "changePassword"} onClick={handleItemClick} /></Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </Menu>
