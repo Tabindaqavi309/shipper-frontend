@@ -175,12 +175,15 @@ const ConsigneeForm = ({
     }
   };
 
+
+ // let objdata: any = customerData
+
   const customerOptions = (customerData: IClientResponse[]) =>
-    customerData.map((value: any, index: number) => ({
-      key: index,
-      text: value.full_name,
-      value: value.id,
-    }));
+  customerData.map((value: any, index: number) => ({
+    key: index,
+    text: value.full_name,
+    value: value.id,
+  }));
 
   const renderCountry = () => {
     return (
@@ -228,7 +231,7 @@ const ConsigneeForm = ({
               placeholder="Search by customer name"
               search={(data, inputValues) => {
                 customerDropDownFullTextSearchAPI(inputValues).then((result: any) => {
-                  setSearchData(result);
+                  setSearchData(result.data);
                 });
                 return customerOptions(searchData);
               }}
