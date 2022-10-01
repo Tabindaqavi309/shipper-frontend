@@ -44,14 +44,14 @@ const stepObj = [
     disabled: true,
     display: true,
   },
-  // {
-  //   title: "content",
-  //   description: "Container contains car",
-  //   value: "content",
-  //   active: false,
-  //   disabled: true,
-  //   display: true,
-  // },
+  {
+    title: "content",
+    description: "Container contains car",
+    value: "content",
+    active: false,
+    disabled: true,
+    display: true,
+  },
   {
     title: "Personal Effect",
     description: "Personal or household items",
@@ -62,13 +62,49 @@ const stepObj = [
   },
   {
     title: "Cars",
-    description: "Add as many cars as you want",
+    description: "Add cars",
     value: "cars",
     active: false,
     disabled: true,
     display: false,
   },
 ];
+
+const stepObjRoro = [
+  {
+    title: "Customer",
+    description: "Attach a customer",
+    value: "customer",
+    active: false,
+    disabled: true,
+    display: true,
+  },
+  {
+    title: "Description",
+    description: "Is this roro or container",
+    value: "description",
+    active: true,
+    disabled: false,
+    display: true,
+  },
+  {
+    title: "Personal Effect",
+    description: "Personal or household items",
+    value: "personal_effect",
+    active: false,
+    disabled: true,
+    display: true,
+  },
+  {
+    title: "Cars",
+    description: "Add cars",
+    value: "cars",
+    active: false,
+    disabled: true,
+    display: false,
+  },
+];
+
 
 type ICheckBox = {
   value: string;
@@ -92,6 +128,7 @@ const radioBoxArray: IRadioBoxArray[] = [{
 }];
 const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, setPageIsLoading }: IProps) => {
   const [step, setStep] = useState<IStep[]>(stepObj);
+  const [stepForRoro, setStepForRoro] = useState<IStep[]>(stepObjRoro);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [section, setSection] = useState<string>("customer");
   const [customerData, setCustomerData] = useState<IClientResponse[]>([]);
@@ -164,9 +201,6 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
     
         }
       }
-      // if(displayContent){
-      //   stepObj[2].display = true 
-      // }
     } catch (err) {
       setIsLoading(false);
     }
@@ -196,17 +230,16 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
       setSection(array[tabIndex - 1].value);
       setStep(array);
     }
-    // if(displayContent){
-    //   stepObj[2].display = true 
-    // }
-  
 
   };
 
-  const renderSection = () => {
+  const renderContainerSection = () => {
     switch (section) {
       case "customer":
         return <CustomerForm formValues={formValues} setFormValues={setFormValues} customerData={customerData} />;
+
+        case "content":
+        return <ContentForm step={step} setStep={setStep}  setFormValues={setFormValues} />;  
       case "description":
         return (
           <ContainerType
@@ -216,6 +249,68 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
             setRadioArray={setRadioArray}
             optionData={optionData}
             setOptionData={setOptionData}
+            stepForRoro ={stepForRoro}
+            setStepForRoro = {setStepForRoro}
+            step = {step}
+            stepObj = {stepObj}
+            setStep = {setStep}
+            setDisplayContent={setDisplayContent}
+            setDisplayCars={setDisplayCars}
+          />);  
+      case "personal_effect":
+        return (
+          <Form style={{ marginTop: 10 }}>
+            <TextArea
+              placeholder="Personal effect content here"
+              style={{ minHeight: 100 }}
+              onChange={(e, data) => {
+                setFormValues((prev: any) => {
+                  return {
+                    ...prev,
+                    ["personal_effect"]: data.value,
+                  };
+                });
+              }}
+              value={formValues.personal_effect.toUpperCase()}
+            />
+          </Form>
+        );
+      case "cars":
+        return (
+          <CarsComponent
+            containerId={containerId}
+            carFormValues={carFormValues}
+            setCarFormValues={setCarFormValues}
+            carData={carData}
+            setCarData={setCarData}
+            formValues={formValues}
+          />
+        );
+      default:
+        return "None to render";
+    }
+  };
+
+  const renderRoroSection = () => {
+    switch (section) {
+      case "customer":
+        return <CustomerForm formValues={formValues} setFormValues={setFormValues} customerData={customerData} />;
+        case "content":
+          return 
+        case "description":
+        return (
+          <ContainerType
+            setFormValues={setFormValues}
+            formValues={formValues}
+            radioArray={radioArray}
+            setRadioArray={setRadioArray}
+            optionData={optionData}
+            setOptionData={setOptionData}
+            step = {step}
+            stepObj = {stepObj}
+            stepForRoro = {stepForRoro}
+            setStepForRoro ={setStepForRoro}
+            setStep = {setStep}
             setDisplayContent={setDisplayContent}
             setDisplayCars={setDisplayCars}
           />);  
@@ -272,7 +367,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
       </Modal.Header>
       <Modal.Content scrolling>
         <ModalStep step={step} />
-        {renderSection()}
+        {!displayCars? renderContainerSection():renderRoroSection()}
       </Modal.Content>
       <Modal.Actions>
         {isLoading ? (

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { Checkbox, Dropdown, Button, Icon, Input, Radio } from "semantic-ui-react";
-import { IContainerForm, IRadioBoxArray } from "../../Types/containerTypes";
+import { Radio } from "semantic-ui-react";
+import { IContainerForm, IRadioBoxArray, IStep } from "../../Types/containerTypes";
 import { fetchAutoCompleteAPI, createAutoComplete_API } from "../../actions/poa_nra";
 import { IAutoComplete } from "../../Types/poaNraTypes";
 
@@ -13,9 +13,14 @@ type IProps = {
   setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
   setDisplayCars: Dispatch<SetStateAction<boolean>>;
   setDisplayContent: Dispatch<SetStateAction<boolean>>;
+  stepForRoro: IStep[];
+  setStepForRoro: Dispatch<SetStateAction<IStep[]>>;
+  step: IStep[];
+  setStep: Dispatch<SetStateAction<IStep[]>>;
+  stepObj: IStep[];
 };
 
-const ContainerType = ({ setFormValues, formValues, radioArray, setDisplayCars,setDisplayContent, setRadioArray, optionData, setOptionData }: IProps) => {
+const ContainerType = ({ setFormValues, formValues, stepObj, radioArray,step,setStep, setDisplayCars,setDisplayContent,stepForRoro,setStepForRoro, setRadioArray, optionData, setOptionData }: IProps) => {
   useEffect(() => {
     fetchAutoCompleteAPI().then((data) => {
       setOptionData(data);
@@ -53,182 +58,7 @@ const ContainerType = ({ setFormValues, formValues, radioArray, setDisplayCars,s
     document.getElementById("inputDiv" + name).style.display = "none";
   };
 
-  const renderInput1 = () => {
-    return (
-      <div>
-        <div id={"dropDownfreight"}>
-          <Dropdown
-            placeholder={"Freight"}
-            search
-            selection
-            value={formValues.freight}
-            options={options("freight")}
-            style={{ width: 250 }}
-            name={"freight"}
-            clearable
-            onChange={(e, { value, name }) => {
-              setFormValues((prev: any) => {
-                return {
-                  ...prev,
-                  [name]: value,
-                };
-              });
-            }}
-          />
 
-          <Button
-            icon
-            style={{ marginLeft: 5 }}
-            onClick={() => {
-              //@ts-ignore
-              document.getElementById("dropDownfreight").style.display = "none";
-              //@ts-ignore
-              document.getElementById("inputDivfreight").style.display = "block";
-            }}
-          >
-            <Icon name="add" />
-          </Button>
-        </div>
-        <div id={"inputDivfreight"} style={{ display: "none" }}>
-          <Input placeholder="Enter text" id={`input_freight`} />
-          <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "freight")}>
-            Save
-          </Button>
-          <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "freight")} color="red">
-            <Icon name="close" />
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const renderInput2 = () => {
-    return (
-      <div>
-        <div id={"dropDownunit"}>
-          <Dropdown
-            placeholder={"Unit"}
-            search
-            selection
-            value={formValues.unit}
-            options={options("unit")}
-            style={{ width: 250 }}
-            name={"unit"}
-            clearable
-            onChange={(e, { value, name }) => {
-              setFormValues((prev: any) => {
-                return {
-                  ...prev,
-                  [name]: value,
-                };
-              });
-            }}
-          />
-
-          <Button
-            icon
-            style={{ marginLeft: 5 }}
-            onClick={() => {
-              //@ts-ignore
-              document.getElementById("dropDownunit").style.display = "none";
-              //@ts-ignore
-              document.getElementById("inputDivunit").style.display = "block";
-            }}
-          >
-            <Icon name="add" />
-          </Button>
-        </div>
-        <div id={"inputDivunit"} style={{ display: "none" }}>
-          <Input placeholder="Enter text" id={`input_unit`} />
-          <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "unit")}>
-            Save
-          </Button>
-          <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "unit")} color="red">
-            <Icon name="close" />
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const renderInput3 = () => {
-    return (
-      <div>
-        <div id={"dropDownin_transit"}>
-          <Dropdown
-            placeholder={"In Transit"}
-            search
-            selection
-            value={formValues.in_transit}
-            options={options("in_transit")}
-            style={{ width: 250 }}
-            name={"in_transit"}
-            clearable
-            onChange={(e, { value, name }) => {
-              setFormValues((prev: any) => {
-                return {
-                  ...prev,
-                  [name]: value,
-                };
-              });
-            }}
-          />
-
-          <Button
-            icon
-            style={{ marginLeft: 5 }}
-            onClick={() => {
-              //@ts-ignore
-              document.getElementById("dropDownin_transit").style.display = "none";
-              //@ts-ignore
-              document.getElementById("inputDivin_transit").style.display = "block";
-            }}
-          >
-            <Icon name="add" />
-          </Button>
-        </div>
-        <div id={"inputDivin_transit"} style={{ display: "none" }}>
-          <Input placeholder="Enter text" id={`input_in_transit`} />
-          <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "in_transit")}>
-            Save
-          </Button>
-          <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "in_transit")} color="red">
-            <Icon name="close" />
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-
-  const renderRadioButton = () => {
-
-    
-    // if (radioArray) {
-    //   return radioArray.map((data, index) => (
-    //     <Radio
-    //       label={data.label}
-    //       name={`radioGroup${data.label}`}
-    //       value={data.label}
-    //       checked={data.isChecked}
-    //       onChange={(e, { value }) => {
-    //         const copyRadioArray = [...radioArray];
-    //         const copyInputFunction = [...inputFunction];
-    //         for (let i = 0; i < radioArray.length; i++) {
-    //           copyRadioArray[i].isChecked = false;
-    //         }
-    //         copyRadioArray[index].isChecked = true;
-    //         copyInputFunction[mainIndex].radioArray = copyRadioArray;
-    //         const val = value as string;
-    //         copyInputFunction[mainIndex].value = val;
-    //         setInputFunction(copyInputFunction);
-    //       }}
-    //       style={{ marginBottom: 10, marginLeft: 10, marginTop: 10 }}
-    //       key={index}
-    //     />
-    //   ));
-    // }
-  };
 
   return (
     <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -240,6 +70,7 @@ const ContainerType = ({ setFormValues, formValues, radioArray, setDisplayCars,s
           name={data.value}
           checked={data.isChecked}
           onChange={(e, data) => {
+            console.log(step)
             const copyRadioArray = [...radioArray ];
             for (let i = 0; i < radioArray.length; i++) {
               copyRadioArray[i].isChecked = false;
@@ -254,10 +85,16 @@ const ContainerType = ({ setFormValues, formValues, radioArray, setDisplayCars,s
             });
             setRadioArray(copyRadioArray);
             if(data.value === "roro")
-             {  setDisplayCars(true)
+             {  
+              setDisplayCars(true)
+              let array = [...stepForRoro];
+                array[3].display = true
+                setStep(array)
             }
             else{
-              setDisplayContent(true)
+              let array = [...stepObj];
+              setDisplayCars(false)
+                  setStep(array)
             }
           }}
           value={data.value}
