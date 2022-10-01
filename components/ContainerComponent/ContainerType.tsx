@@ -6,7 +6,7 @@ import { IAutoComplete } from "../../Types/poaNraTypes";
 
 type IProps = {
 
-  
+
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
   radioArray: IRadioBoxArray[];
   setRadioArray: Dispatch<SetStateAction<IRadioBoxArray[]>>;
@@ -21,7 +21,7 @@ type IProps = {
   stepObj: IStep[];
 };
 
-const ContainerType = ({ setFormValues, formValues, stepObj, radioArray,step,setStep, setDisplayCars,setDisplayContent,stepForRoro,setStepForRoro, setRadioArray, optionData, setOptionData }: IProps) => {
+const ContainerType = ({ setFormValues, formValues, stepObj, radioArray,step,setStep, setDisplayCars,stepForRoro,setStepForRoro, setRadioArray, optionData, setOptionData }: IProps) => {
   useEffect(() => {
     fetchAutoCompleteAPI().then((data) => {
       setOptionData(data);
