@@ -126,8 +126,9 @@ const PrintNra = () => {
                           <span style={{ fontSize: 18 }}>{row.cus_state !== null ? row.cus_state + "," : ""}</span>
                           <br />
                           <span style={{ fontSize: 18 }}>{row.cus_zipcode}, USA,</span>&nbsp; <br />
-                          <span style={{ fontSize: 18 }}>Email:{row.email}</span>,&nbsp;
-                          <span style={{ fontSize: 18 }}>Tel:{row.phone_number}</span>
+                          <span style={{ fontSize: 18 }}>Tel:{row.phone_number}</span><br/>
+                          <span style={{ fontSize: 18 }}>Email:{row.email}</span>&nbsp;
+
                         </div>
                       ) : (
                         <div>

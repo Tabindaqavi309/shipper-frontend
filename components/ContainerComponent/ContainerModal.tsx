@@ -86,14 +86,14 @@ const stepObjRoro = [
     disabled: false,
     display: true,
   },
-  {
-    title: "Personal Effect",
-    description: "Personal or household items",
-    value: "personal_effect",
-    active: false,
-    disabled: true,
-    display: true,
-  },
+  // {
+  //   title: "Personal Effect",
+  //   description: "Personal or household items",
+  //   value: "personal_effect",
+  //   active: false,
+  //   disabled: true,
+  //   display: true,
+  // },
   {
     title: "Cars",
     description: "Add cars",
@@ -162,6 +162,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
 
   const handleNext = async () => {
     try {
+      console.log(section)
       const array = [...step];
       resetStep(array);
       const arrayLength = array.filter((result) => result.display).length;
@@ -200,6 +201,13 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
             setIsLoading(false);
             setContainerId(data.id)
     
+        }
+      } else{
+        if(displayCars == true && section === "description"){
+          setIsLoading(true);
+          const data: any = await handleSaveContainerAPI(formValues);
+          setIsLoading(false);
+          setContainerId(data.id)
         }
       }
     } catch (err) {

@@ -89,7 +89,7 @@ const ContainerType = ({ setFormValues, formValues, stepObj, radioArray,step,set
              {  
               setDisplayCars(true)
               let array = [...stepForRoro];
-                array[3].display = true
+                array[2].display = true
                 setStep(array)
             }
             else{
