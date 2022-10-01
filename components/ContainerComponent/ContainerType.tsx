@@ -5,6 +5,8 @@ import { fetchAutoCompleteAPI, createAutoComplete_API } from "../../actions/poa_
 import { IAutoComplete } from "../../Types/poaNraTypes";
 
 type IProps = {
+
+  
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
   radioArray: IRadioBoxArray[];
   setRadioArray: Dispatch<SetStateAction<IRadioBoxArray[]>>;
