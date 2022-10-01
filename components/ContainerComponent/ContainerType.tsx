@@ -6,10 +6,8 @@ import { IAutoComplete } from "../../Types/poaNraTypes";
 
 type IProps = {
   setFormValues: Dispatch<SetStateAction<IContainerForm>>;
-  checkBox: any;
   radioArray: IRadioBoxArray[];
   setRadioArray: Dispatch<SetStateAction<IRadioBoxArray[]>>;
-  setCheckBox: Dispatch<SetStateAction<any>>;
   optionData: IAutoComplete[];
   formValues: IContainerForm;
   setOptionData: Dispatch<SetStateAction<IAutoComplete[]>>;
@@ -21,7 +19,7 @@ type IProps = {
   stepObj: IStep[];
 };
 
-const ContainerType = ({ setFormValues, formValues,stepObj, radioArray,step,setStep, setDisplayCars,stepForRoro,setStepForRoro, setRadioArray, checkBox, setCheckBox, optionData, setOptionData }: IProps) => {
+const ContainerType = ({ setFormValues, formValues, stepObj, radioArray,step,setStep, setDisplayCars,setDisplayContent,stepForRoro,setStepForRoro, setRadioArray, optionData, setOptionData }: IProps) => {
   useEffect(() => {
     fetchAutoCompleteAPI().then((data) => {
       setOptionData(data);
@@ -59,152 +57,7 @@ const ContainerType = ({ setFormValues, formValues,stepObj, radioArray,step,setS
     document.getElementById("inputDiv" + name).style.display = "none";
   };
 
-  // const renderInput1 = () => {
-  //   return (
-  //     <div>
-  //       <div id={"dropDownfreight"}>
-  //         <Dropdown
-  //           placeholder={"Freight"}
-  //           search
-  //           selection
-  //           value={formValues.freight}
-  //           options={options("freight")}
-  //           style={{ width: 250 }}
-  //           name={"freight"}
-  //           clearable
-  //           onChange={(e, { value, name }) => {
-  //             setFormValues((prev: any) => {
-  //               return {
-  //                 ...prev,
-  //                 [name]: value,
-  //               };
-  //             });
-  //           }}
-  //         />
 
-  //         <Button
-  //           icon
-  //           style={{ marginLeft: 5 }}
-  //           onClick={() => {
-  //             //@ts-ignore
-  //             document.getElementById("dropDownfreight").style.display = "none";
-  //             //@ts-ignore
-  //             document.getElementById("inputDivfreight").style.display = "block";
-  //           }}
-  //         >
-  //           <Icon name="add" />
-  //         </Button>
-  //       </div>
-  //       <div id={"inputDivfreight"} style={{ display: "none" }}>
-  //         <Input placeholder="Enter text" id={`input_freight`} />
-  //         <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "freight")}>
-  //           Save
-  //         </Button>
-  //         <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "freight")} color="red">
-  //           <Icon name="close" />
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const renderInput2 = () => {
-  //   return (
-  //     <div>
-  //       <div id={"dropDownunit"}>
-  //         <Dropdown
-  //           placeholder={"Unit"}
-  //           search
-  //           selection
-  //           value={formValues.unit}
-  //           options={options("unit")}
-  //           style={{ width: 250 }}
-  //           name={"unit"}
-  //           clearable
-  //           onChange={(e, { value, name }) => {
-  //             setFormValues((prev: any) => {
-  //               return {
-  //                 ...prev,
-  //                 [name]: value,
-  //               };
-  //             });
-  //           }}
-  //         />
-
-  //         <Button
-  //           icon
-  //           style={{ marginLeft: 5 }}
-  //           onClick={() => {
-  //             //@ts-ignore
-  //             document.getElementById("dropDownunit").style.display = "none";
-  //             //@ts-ignore
-  //             document.getElementById("inputDivunit").style.display = "block";
-  //           }}
-  //         >
-  //           <Icon name="add" />
-  //         </Button>
-  //       </div>
-  //       <div id={"inputDivunit"} style={{ display: "none" }}>
-  //         <Input placeholder="Enter text" id={`input_unit`} />
-  //         <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "unit")}>
-  //           Save
-  //         </Button>
-  //         <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "unit")} color="red">
-  //           <Icon name="close" />
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // const renderInput3 = () => {
-  //   return (
-  //     <div>
-  //       <div id={"dropDownin_transit"}>
-  //         <Dropdown
-  //           placeholder={"In Transit"}
-  //           search
-  //           selection
-  //           value={formValues.in_transit}
-  //           options={options("in_transit")}
-  //           style={{ width: 250 }}
-  //           name={"in_transit"}
-  //           clearable
-  //           onChange={(e, { value, name }) => {
-  //             setFormValues((prev: any) => {
-  //               return {
-  //                 ...prev,
-  //                 [name]: value,
-  //               };
-  //             });
-  //           }}
-  //         />
-
-  //         <Button
-  //           icon
-  //           style={{ marginLeft: 5 }}
-  //           onClick={() => {
-  //             //@ts-ignore
-  //             document.getElementById("dropDownin_transit").style.display = "none";
-  //             //@ts-ignore
-  //             document.getElementById("inputDivin_transit").style.display = "block";
-  //           }}
-  //         >
-  //           <Icon name="add" />
-  //         </Button>
-  //       </div>
-  //       <div id={"inputDivin_transit"} style={{ display: "none" }}>
-  //         <Input placeholder="Enter text" id={`input_in_transit`} />
-  //         <Button secondary style={{ marginLeft: 5 }} onClick={handleAddOptions.bind(this, "in_transit")}>
-  //           Save
-  //         </Button>
-  //         <Button icon style={{ marginLeft: 5 }} onClick={handleClose.bind(this, "in_transit")} color="red">
-  //           <Icon name="close" />
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
 
   return (
     <div style={{ textAlign: "center", marginTop: 20 }}>
@@ -245,14 +98,23 @@ const ContainerType = ({ setFormValues, formValues,stepObj, radioArray,step,setS
           }}
           value={data.value}
           />
-
+       
         ))
       }
       {/* <Radio
         label={checkBox.label}
         style={{ marginRight: 20 }}
         name={checkBox.value}
-	@@ -217,17 +119,17 @@ const ContainerType = ({ setFormValues, formValues, checkBox, setCheckBox, optio
+        checked={checkBox.isChecked}
+        onChange={(e, data) => {
+          const checkCopyArray = { ...checkBox };
+          checkCopyArray.isChecked = data.checked ? true : false;
+          setFormValues((prev: any) => {
+            return {
+              ...prev,
+              ["container_type"]: data.checked ? "roro" : "container",
+            };
+          });
           setCheckBox(checkCopyArray);
         }}
         value={checkBox.value}

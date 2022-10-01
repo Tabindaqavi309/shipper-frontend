@@ -339,6 +339,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         return "None to render";
     }
   };
+
   const renderRoroSection = () => {
     switch (section) {
       case "customer":
@@ -394,6 +395,7 @@ const ContainerModal = ({ size, open, closeModal, formValues, setFormValues, set
         return "None to render";
     }
   };
+
 
   return (
     <Modal size={size} open={open} onClose={closeModal}>
