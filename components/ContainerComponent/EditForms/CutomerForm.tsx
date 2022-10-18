@@ -41,10 +41,13 @@ const CustomerForm = ({ formValues, setFormValues, customerData }: IProps) => {
           options={customerOptions(customerData)}
           style={{ width: "100%" }}
           onChange={(e, { value, name }) => {
+            console.log(name, value);
+            // console.log(formValues.customerId);
             setFormValues((prev: any) => {
+              console.log(prev);
               return {
                 ...prev,
-                [name]: value,
+                ["customerId"]: value,
               };
             });
           }}
