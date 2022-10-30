@@ -1,10 +1,10 @@
 {
   "customerSRV": {
-    "localUrl": "https://oldsailor-shipper-app.herokuapp.com",
+    "localUrl": "https://old-shipper-backend.herokuapp.com",
     "proURL": ""
   },
   "authSRV": {
-    "localUrl": "https://shipper-auth-app.herokuapp.com",
+    "localUrl": "https://old-shipper-auth.herokuapp.com",
     "proURL": ""
   }
 }

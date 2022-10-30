@@ -1,4 +1,4 @@
-export const authsrv = "https://shipper-auth-app.herokuapp.com";
-export const receiptsSrv = "https://oldsailor-shipper-app.herokuapp.com";
-export const containerSrv = "https://oldsailor-shipper-app.herokuapp.com";
-export const customerSrv = "https://oldsailor-shipper-app.herokuapp.com";
+export const authsrv = "https://old-shipper-auth.herokuapp.com";
+export const receiptsSrv = "https://old-shipper-backend.herokuapp.com";
+export const containerSrv = "https://old-shipper-backend.herokuapp.com";
+export const customerSrv = "https://old-shipper-backend.herokuapp.com";
