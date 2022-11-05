@@ -76,7 +76,7 @@ const Details = ({ setFormValues, formValues }: IProps) => {
             focus
             style={{ width: "100%" }}
             name="label_1_value"
-            placeholder="any text"
+            placeholder="Charge amount"
             onChange={handleInput}
             value={formValues.label_1_value}
           />
@@ -130,7 +130,7 @@ const Details = ({ setFormValues, formValues }: IProps) => {
             focus
             style={{ width: "100%" }}
             name="label_4_value"
-            placeholder="Charge amount"
+            placeholder="Deduction amount"
             onChange={handleInput}
             value={formValues.label_4_value}
           />
@@ -148,7 +148,7 @@ const Details = ({ setFormValues, formValues }: IProps) => {
             focus
             style={{ width: "100%" }}
             name="label_5_value"
-            placeholder="Charge amount"
+            placeholder="Deduction amount"
             onChange={handleInput}
             value={formValues.label_5_value}
           />
@@ -166,7 +166,7 @@ const Details = ({ setFormValues, formValues }: IProps) => {
             focus
             style={{ width: "100%" }}
             name="label_6_value"
-            placeholder="Charge amount"
+            placeholder="Deduction amount"
             onChange={handleInput}
             value={formValues.label_6_value}
           />
