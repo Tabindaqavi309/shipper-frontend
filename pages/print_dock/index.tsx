@@ -5,6 +5,8 @@ import moment from "moment";
 import { fetchToDockPrint } from "../../actions/dockReceipts";
 import { fetchCars } from "../../actions/container";
 import BillOfLadingSection from "../../components/BillOfLadingSection";
+import Mailto from "../../components/EmailComponent";
+import { Button } from "semantic-ui-react";
 
 const PrintNra = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,7 +36,9 @@ const PrintNra = () => {
         setTextToRender("BILL OF LADING");
         setDisplayBillOfLading(true);
       } else {
-        setTextToRender(data.container_type === "container" ? " DOCK RECEIPT" : "RORO RECEIPT");
+        setTextToRender(
+          data.container_type === "container" ? " DOCK RECEIPT" : "RORO RECEIPT"
+        );
       }
 
       if (shipAsAgent === "true") {
@@ -53,7 +57,10 @@ const PrintNra = () => {
         <title>
           {row.customer_name} {textToRender}
         </title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="/js/html2pdf.js"></script>
         <style jsx global>
@@ -100,13 +107,18 @@ const PrintNra = () => {
                   <b> {textToRender}</b>
                 </span>
                 <br />
-                <span style={{ fontSize: 12 }}>Date: {moment(row.date_added).format("l")}</span>
+                <span style={{ fontSize: 12 }}>
+                  Date: {moment(row.date_added).format("l")}
+                </span>
               </div>
               <br />
               <div className="row" style={{ marginTop: 40 }}>
                 <div style={{ borderTop: "1px solid #000", width: "100%" }}>
                   <div className="row">
-                    <div className="col-md-6" style={{ borderRight: "1px solid #000" }}>
+                    <div
+                      className="col-md-6"
+                      style={{ borderRight: "1px solid #000" }}
+                    >
                       {!displayShipAsAgent ? (
                         <div>
                           <b style={{ fontSize: 16 }}>SHIPPER/EXPORTER</b>
@@ -114,21 +126,48 @@ const PrintNra = () => {
                           {row.client_as_agent ? (
                             <span style={{ fontSize: 16 }}>
                               {row.client_as_agent
-                                ? row.customer_name + "\nAS AGENT FOR OLDSAILORS OCEAN SHIPPING \n"
-                                : "OLDSAILORS OCEAN SHIPPING AS AGENT FOR \n" + row.customer_name}
+                                ? row.customer_name +
+                                  "\nAS AGENT FOR OLDSAILORS OCEAN SHIPPING \n"
+                                : "OLDSAILORS OCEAN SHIPPING AS AGENT FOR \n" +
+                                  row.customer_name}
                             </span>
                           ) : (
-                            <span style={{ fontSize: 18 }}>{row.customer_name},</span>
+                            <span style={{ fontSize: 18 }}>
+                              {row.customer_name},
+                            </span>
                           )}{" "}
                           <br />
-                          <span style={{ fontSize: 18 }}><span>{row.cus_address!=="" ?<span>{row.cus_address+","}<br/></span>:""}</span></span>
-                          <span style={{ fontSize: 18 }}>{row.cus_city !== null ? row.cus_city + ", " : ""}</span>
-                          <span style={{ fontSize: 18 }}>{row.cus_state !== null ? row.cus_state + "," : ""}</span>
+                          <span style={{ fontSize: 18 }}>
+                            <span>
+                              {row.cus_address !== "" ? (
+                                <span>
+                                  {row.cus_address + ","}
+                                  <br />
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </span>
+                          </span>
+                          <span style={{ fontSize: 18 }}>
+                            {row.cus_city !== null ? row.cus_city + ", " : ""}
+                          </span>
+                          <span style={{ fontSize: 18 }}>
+                            {row.cus_state !== null ? row.cus_state + "," : ""}
+                          </span>
                           <br />
-                          <span style={{ fontSize: 18 }}>{row.cus_zipcode}, USA,</span>&nbsp; <br />
-                          <span style={{ fontSize: 18 }}>Tel:{row.phone_number}</span><br/>
-                          <span style={{ fontSize: 18 }}>Email:{row.email}</span>&nbsp;
-
+                          <span style={{ fontSize: 18 }}>
+                            {row.cus_zipcode}, USA,
+                          </span>
+                          &nbsp; <br />
+                          <span style={{ fontSize: 18 }}>
+                            Tel:{row.phone_number}
+                          </span>
+                          <br />
+                          <span style={{ fontSize: 18 }}>
+                            Email:{row.email}
+                          </span>
+                          &nbsp;
                         </div>
                       ) : (
                         <div>
@@ -137,7 +176,9 @@ const PrintNra = () => {
                           <div>
                             <span>OLDSAILORS OCEAN SHIPPING LLC </span>
                             <br />
-                            <span>13903 CHADSWORTH TERRACE, Laurel, MD 20707, USA</span>
+                            <span>
+                              13903 CHADSWORTH TERRACE, Laurel, MD 20707, USA
+                            </span>
                             <br />
                             <span>301-213-6961</span>
                             <br />
@@ -154,14 +195,37 @@ const PrintNra = () => {
                         <br />
                         <span style={{ fontSize: 18 }}>{row.con_name}</span>
                         <br />
-                        <span style={{ fontSize: 18 }}><span>{row.con_address!=="" ?<span>{row.con_address+","}<br/></span>:""}</span></span>
-                        <span style={{ fontSize: 18 }}><span>{row.con_email !== "" ? <span>{row.con_email+","}<br/></span> : ""}</span></span>
+                        <span style={{ fontSize: 18 }}>
+                          <span>
+                            {row.con_address !== "" ? (
+                              <span>
+                                {row.con_address + ","}
+                                <br />
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                        </span>
+                        <span style={{ fontSize: 18 }}>
+                          <span>
+                            {row.con_email !== "" ? (
+                              <span>
+                                {row.con_email + ","}
+                                <br />
+                              </span>
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                        </span>
                         <span style={{ fontSize: 18 }}>
                           {row.con_city}, {row.con_state},
                         </span>
                         <br />
                         <span style={{ fontSize: 18 }}>
-                          {row.con_country !== null ? row.con_country : ""}, Tel: {row.con_tel}
+                          {row.con_country !== null ? row.con_country : ""},
+                          Tel: {row.con_tel}
                         </span>
                       </div>
                       <div style={{ borderTop: "1px solid #000" }}>
@@ -174,14 +238,22 @@ const PrintNra = () => {
                                     <b>VESSEL</b>
                                   </span>
                                   <br />
-                                  <span style={{ fontSize: 17 }}>{row.vessel_name !== "" ? row.vessel_name : ""}</span>
+                                  <span style={{ fontSize: 17 }}>
+                                    {row.vessel_name !== ""
+                                      ? row.vessel_name
+                                      : ""}
+                                  </span>
                                 </div>
                                 <div className="col-md-6">
                                   <span style={{ fontSize: 13 }}>
                                     <b>VOYAGE</b>
                                   </span>
                                   <br />
-                                  <span style={{ fontSize: 17 }}>{row.voyage_number !== "" ? row.voyage_number : ""}</span>
+                                  <span style={{ fontSize: 17 }}>
+                                    {row.voyage_number !== ""
+                                      ? row.voyage_number
+                                      : ""}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -191,7 +263,11 @@ const PrintNra = () => {
                               <b>PORT OF LOADING</b>
                             </span>
                             <br />
-                            <span style={{ fontSize: 17 }}>{row.port_of_loading !== "" ? row.port_of_loading : ""}</span>
+                            <span style={{ fontSize: 17 }}>
+                              {row.port_of_loading !== ""
+                                ? row.port_of_loading
+                                : ""}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -199,19 +275,28 @@ const PrintNra = () => {
                         <div className="row">
                           <div className="col-md-12">
                             <div className="row">
-                              <div className="col-md-7" style={{ borderRight: "1px solid #000" }}>
+                              <div
+                                className="col-md-7"
+                                style={{ borderRight: "1px solid #000" }}
+                              >
                                 <span style={{ fontSize: 13 }}>
                                   <b>PORT OF DISCHARGE</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.port_of_discharge !== "" ? row.port_of_discharge : ""}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.port_of_discharge !== ""
+                                    ? row.port_of_discharge
+                                    : ""}
+                                </span>
                               </div>
                               <div className="col-md-5">
                                 <span style={{ fontSize: 13 }}>
                                   <b>PRE-CARRIAGE BY</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.carrier}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.carrier}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -221,19 +306,28 @@ const PrintNra = () => {
                         <div className="row">
                           <div className="col-md-12">
                             <div className="row">
-                              <div className="col-md-6" style={{ borderRight: "1px solid #000" }}>
+                              <div
+                                className="col-md-6"
+                                style={{ borderRight: "1px solid #000" }}
+                              >
                                 <span style={{ fontSize: 13 }}>
                                   <b>LOADING TERMINAL</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.loading_terminal !== "" ? row.loading_terminal : ""}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.loading_terminal !== ""
+                                    ? row.loading_terminal
+                                    : ""}
+                                </span>
                               </div>
                               <div className="col-md-6">
                                 <span style={{ fontSize: 13 }}>
                                   <b>ORIGINAL (S) TO BE RELEASED</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.originals_to_be_released}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.originals_to_be_released}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -246,19 +340,28 @@ const PrintNra = () => {
                         <div className="row">
                           <div className="col-md-12">
                             <div className="row">
-                              <div className="col-md-6" style={{ borderRight: "1px solid #000" }}>
+                              <div
+                                className="col-md-6"
+                                style={{ borderRight: "1px solid #000" }}
+                              >
                                 <span style={{ fontSize: 13 }}>
                                   <b>BOOKING #</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 18 }}>{row.booking_number !== "" ? row.booking_number : ""}</span>
+                                <span style={{ fontSize: 18 }}>
+                                  {row.booking_number !== ""
+                                    ? row.booking_number
+                                    : ""}
+                                </span>
                               </div>
                               <div className="col-md-6">
                                 <span style={{ fontSize: 13 }}>
                                   <b>FILE NUMBER</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>OLD-{row.id}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  OLD-{row.id}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -274,7 +377,9 @@ const PrintNra = () => {
                                   <b>EXPORTER REFERENCES</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>OLD-{row.id}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  OLD-{row.id}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -285,19 +390,26 @@ const PrintNra = () => {
                         <div className="row">
                           <div className="col-md-12">
                             <div className="row">
-                              <div className="col-md-8" style={{ borderRight: "1px solid #000" }}>
+                              <div
+                                className="col-md-8"
+                                style={{ borderRight: "1px solid #000" }}
+                              >
                                 <span style={{ fontSize: 13 }}>
                                   <b>FORWARDING AGENT REFERENCES</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.forwarding_agent_references}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.forwarding_agent_references}
+                                </span>
                               </div>
                               <div className="col-md-4">
                                 <span style={{ fontSize: 13 }}>
                                   <b>PICK UP TERMINAL</b>
                                 </span>
                                 <br />
-                                <span style={{ fontSize: 17 }}>{row.pickup_terminal}</span>
+                                <span style={{ fontSize: 17 }}>
+                                  {row.pickup_terminal}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -314,14 +426,21 @@ const PrintNra = () => {
                                     <b>FOR TRANSHIPMENT TO</b>
                                   </span>
                                   <br />
-                                  <span style={{ fontSize: 17 }}>{row.for_transhipment_to}</span>
+                                  <span style={{ fontSize: 17 }}>
+                                    {row.for_transhipment_to}
+                                  </span>
                                 </div>
-                                <div className="col-md-6" style={{ borderLeft: "1px solid #000" }}>
+                                <div
+                                  className="col-md-6"
+                                  style={{ borderLeft: "1px solid #000" }}
+                                >
                                   <span style={{ fontSize: 13 }}>
                                     <b>PLACE OF RECEIPT</b>
                                   </span>
                                   <br />
-                                  <span style={{ fontSize: 17 }}>{row.place_of_receipt}</span>
+                                  <span style={{ fontSize: 17 }}>
+                                    {row.place_of_receipt}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -331,7 +450,9 @@ const PrintNra = () => {
                               <b>TYPE OF MOVE</b>
                             </span>
                             <br />
-                            <span style={{ fontSize: 17 }}>{row.type_of_move}</span>
+                            <span style={{ fontSize: 17 }}>
+                              {row.type_of_move}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -348,9 +469,16 @@ const PrintNra = () => {
                         <br />
                       </div>
                       <div style={{ borderTop: "1px solid #000" }}>
-                        <b style={{ fontSize: 14 }}>POINT AND COUNTRY OF ORIGIN</b>
+                        <b style={{ fontSize: 14 }}>
+                          POINT AND COUNTRY OF ORIGIN
+                        </b>
                         <br />
-                        <span style={{ fontSize: 25 }}> {row.point_and_country_of_origin === null ? "USA" : row.point_and_country_of_origin} </span>
+                        <span style={{ fontSize: 25 }}>
+                          {" "}
+                          {row.point_and_country_of_origin === null
+                            ? "USA"
+                            : row.point_and_country_of_origin}{" "}
+                        </span>
                         <br />
                       </div>
                     </div>
@@ -360,17 +488,41 @@ const PrintNra = () => {
 
               <div>
                 <div className="row">
-                  <div className="col-md-2" style={{ border: "1px solid #000" }}>
-                    <span style={{ fontSize: 13, fontWeight: "bold" }}>MARKS&nbsp;AND&nbsp;NUMBERS</span>
+                  <div
+                    className="col-md-2"
+                    style={{ border: "1px solid #000" }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: "bold" }}>
+                      MARKS&nbsp;AND&nbsp;NUMBERS
+                    </span>
                   </div>
-                  <div className="col-md-6" style={{ border: "1px solid #000" }}>
-                    <span style={{ fontSize: 13, fontWeight: "bold", padding: 7 }}>DESCRIPTION OF PACKAGES AND GOODS IN SCHEDULE</span>
+                  <div
+                    className="col-md-6"
+                    style={{ border: "1px solid #000" }}
+                  >
+                    <span
+                      style={{ fontSize: 13, fontWeight: "bold", padding: 7 }}
+                    >
+                      DESCRIPTION OF PACKAGES AND GOODS IN SCHEDULE
+                    </span>
                   </div>
-                  <div className="col-md-2" style={{ border: "1px solid #000" }}>
-                    <span style={{ fontSize: 13, fontWeight: "bold", padding: 7 }}>WEIGHT</span>
+                  <div
+                    className="col-md-2"
+                    style={{ border: "1px solid #000" }}
+                  >
+                    <span
+                      style={{ fontSize: 13, fontWeight: "bold", padding: 7 }}
+                    >
+                      WEIGHT
+                    </span>
                   </div>
-                  <div className="col-md-2" style={{ border: "1px solid #000" }}>
-                    <span style={{ fontSize: 13, fontWeight: "bold" }}>MEASUREMENT</span>
+                  <div
+                    className="col-md-2"
+                    style={{ border: "1px solid #000" }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: "bold" }}>
+                      MEASUREMENT
+                    </span>
                   </div>
                 </div>
               </div>
@@ -378,30 +530,58 @@ const PrintNra = () => {
                 <div className="col-md-2" style={{ border: "1px solid #000" }}>
                   <div className="row">
                     <div style={{ padding: 7 }}>
-                      <b> {row.container_type === "container" ? "CONTAINER #:" : "FREIGHT:"}</b>
+                      <b>
+                        {" "}
+                        {row.container_type === "container"
+                          ? "CONTAINER #:"
+                          : "FREIGHT:"}
+                      </b>
                       <br />
-                      <span style={{ fontSize: 18 }}> {row.container_type === "container" ? row.container_number : row.freight} </span>
+                      <span style={{ fontSize: 18 }}>
+                        {" "}
+                        {row.container_type === "container"
+                          ? row.container_number
+                          : row.freight}{" "}
+                      </span>
                       <br />
                       <br />
-                      <b>{row.container_type === "container" ? "SEAL #" : "IN TRANSIT"} :</b>
-                      <span style={{ fontSize: 18 }}>{row.container_type === "container" ? row.seal_number : row.in_transit}</span>
+                      <b>
+                        {row.container_type === "container"
+                          ? "SEAL #"
+                          : "IN TRANSIT"}{" "}
+                        :
+                      </b>
+                      <span style={{ fontSize: 18 }}>
+                        {row.container_type === "container"
+                          ? row.seal_number
+                          : row.in_transit}
+                      </span>
                       <br />
-                      <br/>
+                      <br />
                       <b>CUT OFF DATE</b>
                       <br />
-                      {row.cut_off_date !== null ? moment(row.cut_off_date).format("l") : ""} <br />
+                      {row.cut_off_date !== null
+                        ? moment(row.cut_off_date).format("l")
+                        : ""}{" "}
+                      <br />
                       <br />
                       {row.container_type === "container" && (
                         <div>
                           <b>SAILING DATE</b>
                           <br />
-                          {row.sail_date !== null ? moment(row.sail_date).format("l") : ""} <br />
+                          {row.sail_date !== null
+                            ? moment(row.sail_date).format("l")
+                            : ""}{" "}
+                          <br />
                         </div>
                       )}
                       <br />
                       <b>ARRIVAL DATE</b>
                       <br />
-                      {row.arrival_date !== null ? moment(row.arrival_date).format("l") : ""} <br />
+                      {row.arrival_date !== null
+                        ? moment(row.arrival_date).format("l")
+                        : ""}{" "}
+                      <br />
                       <br />
                       {row.container_type !== "container" && (
                         <div>
@@ -415,7 +595,11 @@ const PrintNra = () => {
                 <div className="col-md-6" style={{ border: "1px solid #000" }}>
                   <div className="row">
                     <div style={{ padding: 7 }}>
-                      <span style={{ fontSize: 20 }}>{row.container_type === "container" ? row.equipment_size : "RORO CAR"}</span>
+                      <span style={{ fontSize: 20 }}>
+                        {row.container_type === "container"
+                          ? row.equipment_size
+                          : "RORO CAR"}
+                      </span>
                       <br />
 
                       <div style={{ height: 540, fontSize: 20, marginTop: 5 }}>
@@ -430,11 +614,16 @@ const PrintNra = () => {
                         ))}
 
                         <div>
-                          <p id="text_field">{row.personal_effect !== null && row.personal_effect !== "" ? row.personal_effect.toUpperCase() : ""}</p>
+                          <p id="text_field">
+                            {row.personal_effect !== null &&
+                            row.personal_effect !== ""
+                              ? row.personal_effect.toUpperCase()
+                              : ""}
+                          </p>
                         </div>
                         <div>AES#: {row.aes_number}</div>
                       </div>
-                       <span style={{ fontSize: 19 }}>{row.demurrage}</span>
+                      <span style={{ fontSize: 19 }}>{row.demurrage}</span>
                       <br />
                       <div style={{ fontSize: 16, marginLeft: 350 }}>
                         <span>
@@ -443,18 +632,28 @@ const PrintNra = () => {
                       </div>
                       <div style={{ float: "left", fontSize: 13 }}>
                         <span>
-                          <b>SHIPPER ON THIS DOCK RECEIPT CONFIRMS THAT, GAS TANK</b>
+                          <b>
+                            SHIPPER ON THIS DOCK RECEIPT CONFIRMS THAT, GAS TANK
+                          </b>
                         </span>
                         <br />
                         <span>
-                          <b>HAS BEEN DRAINED OFF FUEL, BATTERIES DISCONNECTED,</b>
+                          <b>
+                            HAS BEEN DRAINED OFF FUEL, BATTERIES DISCONNECTED,
+                          </b>
                         </span>
                         <br />
                         <span>
-                          <b>VEHICLES HAVE BEEN BLOCKED AND BRACED, CONTAINER LOADED </b>
+                          <b>
+                            VEHICLES HAVE BEEN BLOCKED AND BRACED, CONTAINER
+                            LOADED{" "}
+                          </b>
                         </span>
                         <span>
-                          <b>IN ACCORDANCE TO GENERAL INTO IMDG CODE PARAGRAPH 12.3.7 & 17.7.7</b>
+                          <b>
+                            IN ACCORDANCE TO GENERAL INTO IMDG CODE PARAGRAPH
+                            12.3.7 & 17.7.7
+                          </b>
                         </span>
                         <br />
                       </div>
@@ -468,7 +667,13 @@ const PrintNra = () => {
                         {carRow.map((result, index) => (
                           <div style={{ textAlign: "left" }} key={index}>
                             <span>
-                              <br /> <span> {result.weight === null ? "" : result.weight} </span>
+                              <br />{" "}
+                              <span>
+                                {" "}
+                                {result.weight === null
+                                  ? ""
+                                  : result.weight}{" "}
+                              </span>
                             </span>
                             <br />
                             <br />
@@ -481,7 +686,12 @@ const PrintNra = () => {
                       <div style={{ fontSize: 16 }}>
                         <br />
                         <span>
-                          <b> {row.total_weight === null ? "" : row.total_weight + "kg"}</b>
+                          <b>
+                            {" "}
+                            {row.total_weight === null
+                              ? ""
+                              : row.total_weight + "kg"}
+                          </b>
                         </span>
                       </div>
                     </div>
@@ -494,7 +704,13 @@ const PrintNra = () => {
                         {carRow.map((result, index) => (
                           <div style={{ textAlign: "left" }} key={index}>
                             <span>
-                              <br /> <span> {result.measurement === null ? "" : result.measurement} </span>
+                              <br />{" "}
+                              <span>
+                                {" "}
+                                {result.measurement === null
+                                  ? ""
+                                  : result.measurement}{" "}
+                              </span>
                             </span>
                             <br />
                             <br />
@@ -503,7 +719,10 @@ const PrintNra = () => {
 
                         <br />
                       </div>
-                      <span> {row.measurement === null ? "" : row.measurement} </span>
+                      <span>
+                        {" "}
+                        {row.measurement === null ? "" : row.measurement}{" "}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -522,12 +741,18 @@ const PrintNra = () => {
                   <br />
                   <span>CHECKED BY: ___________</span>
                 </div>
-                <div className="col-md-7" style={{ borderLeft: "1px solid #000", fontSize: 13 }}>
+                <div
+                  className="col-md-7"
+                  style={{ borderLeft: "1px solid #000", fontSize: 13 }}
+                >
                   <span>
                     <b>
-                      RECEIVED THE ABOVE DESCRIBED GOODS OR PACKAGES SUBJECTED TO ALL THE TERMS OF THE UNDERSIGNED'S REGULAR FORMS OF DOCK RECEIPT AND
-                      BILL OF LADING WHICH SHALL CONSTITUTE THE CONTRACT UNDER WHICH THE GOODS ARE RECEIVED.COPIES OF WHICH ARE AVAILABLE FROM THE
-                      CARRIER ON REQUEST AND MAY BE INSPECTED AT ANY OF ITS OFFICES.
+                      RECEIVED THE ABOVE DESCRIBED GOODS OR PACKAGES SUBJECTED
+                      TO ALL THE TERMS OF THE UNDERSIGNED'S REGULAR FORMS OF
+                      DOCK RECEIPT AND BILL OF LADING WHICH SHALL CONSTITUTE THE
+                      CONTRACT UNDER WHICH THE GOODS ARE RECEIVED.COPIES OF
+                      WHICH ARE AVAILABLE FROM THE CARRIER ON REQUEST AND MAY BE
+                      INSPECTED AT ANY OF ITS OFFICES.
                     </b>
                   </span>
                   <br />
@@ -559,6 +784,13 @@ const PrintNra = () => {
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
       </body>
+      {/* <div>
+        <Button variant="contained" style={{ display: "flex" }}>
+          <Mailto email="foo@bar.baz" subject="Hello & Welcome" body="hELLO">
+            Email
+          </Mailto>
+        </Button>
+      </div> */}
     </div>
   );
 };

@@ -7,10 +7,9 @@
     "build": "next build",
     "start": "next start"
   },
-  "engines" : { 
-    "node" : ">=14.0.0 <15.0.0"
+  "engines": {
+    "node": ">=14.0.0 <15.0.0"
   },
-
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
@@ -26,6 +25,7 @@
     "react-dom": "17.0.2",
     "react-modal": "^3.14.2",
     "react-redux": "^7.2.4",
+    "react-router-dom": "^6.4.2",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
