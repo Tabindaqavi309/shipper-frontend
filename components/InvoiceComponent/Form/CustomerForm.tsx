@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import { IClientResponse } from "../../../Types/clientTypes";
 import { Dropdown } from "semantic-ui-react";
 import { customerDropDownFullTextSearchAPI } from "../../../actions/customer";
@@ -12,14 +12,18 @@ type IProps = {
   setViewIsVisible: Dispatch<SetStateAction<boolean>>;
 };
 
-const CustomerForm = ({ formValues, setFormValues, customerData, setDockReceiptData, setViewIsVisible }: IProps) => {
+const CustomerForm = ({
+  formValues,
+  setFormValues,
+  customerData,
+  setDockReceiptData,
+  setViewIsVisible,
+}: IProps) => {
   const [searchData, setSearchData] = useState<IClientResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const responseData = customerData as any;
-
   const customerOptions = (customerData: IClientResponse[]) =>
-    responseData.map((value: any, index: number) => ({
+    customerData.map((value: any, index: number) => ({
       key: index,
       text: value.full_name,
       value: value.id,
@@ -34,9 +38,11 @@ const CustomerForm = ({ formValues, setFormValues, customerData, setDockReceiptD
         <Dropdown
           placeholder="Search by customer name"
           search={(data, inputValues) => {
-            customerDropDownFullTextSearchAPI(inputValues).then((result: any) => {
-              setSearchData(result);
-            });
+            customerDropDownFullTextSearchAPI(inputValues).then(
+              (result: any) => {
+                setSearchData(result.data);
+              }
+            );
             return customerOptions(searchData);
           }}
           loading={isLoading}
@@ -54,7 +60,9 @@ const CustomerForm = ({ formValues, setFormValues, customerData, setDockReceiptD
               });
               const customerId: number = value as number;
               setIsLoading(true);
-              const data: any[] = await fetchDockReceiptByCustomerId(customerId);
+              const data: any[] = await fetchDockReceiptByCustomerId(
+                customerId
+              );
               setDockReceiptData(data);
               setIsLoading(false);
               setViewIsVisible(true);
